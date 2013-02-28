@@ -1,0 +1,9 @@
+﻿#gitで追加したくないファイルを処理する設定ファイル
+
+#MPLAB Xが作るシステムディレクトリ/ファイルをすべて非許可
+build/
+dist/
+nbproject/
+Makefile
+
+
