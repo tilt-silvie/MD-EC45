@@ -5,5 +5,8 @@ build/
 dist/
 nbproject/
 Makefile
+funclist
 
-
+#Vimで作られる一時ファイルを拒否
+*~
+*.swp
