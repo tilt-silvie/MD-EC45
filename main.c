@@ -10,6 +10,7 @@
 #include	<xc.h>
 #include	<libpic30.h>
 #include	"main.h"
+#include	"pin_assign.h"
 
 /********************************************************/
 
@@ -18,9 +19,9 @@ int main(void)
 	initialize( );
 	
 	while( 1 ) {
-		_LATB6	= 1;
+		LED_1	= 1;
 		__delay_ms( 1000 );
-		_LATB6	= 0;
+		LED_1	= 0;
 		__delay_ms( 1000 );
 	}
 

@@ -11,18 +11,10 @@
 
 #include	"config33f.h"
 
-
-/********************************************************/
-#define	LED_1	_LATB2
-#define	BUTTON_1	_RB6
-/********************************************************/
-
-
 /********************************************************/
 void	initialize( void );
 void	initializeOsc( void );
 void	initializeIO( void );
-void	initializeTimer1( void );
 /********************************************************/
 
 
