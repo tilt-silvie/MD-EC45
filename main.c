@@ -5,10 +5,11 @@
  * Created on 2012/07/20, 18:13
  */
 
-#define	FCY	40000000
+#define	FCY	39613750
 
 #include	<xc.h>
 #include	<libpic30.h>
+#include	"uart_dsPIC33F/uart_dsPIC33F.h"
 #include	"main.h"
 #include	"pin_assign.h"
 
@@ -17,14 +18,13 @@
 int main(void) 
 {
 	initialize( );
+
+	initializeUart( 9, 8, FCY*2, 9600);
 	
 	while( 1 ) {
-		LED_1	= 1;
-		__delay_ms( 1000 );
-		LED_1	= 0;
-		__delay_ms( 1000 );
+		printf("AIUEO \n");
+		
 	}
-
 	return	0;
 }
 
@@ -48,7 +48,7 @@ void	initializeOsc( void )
 
 	_PLLPOST	= 0b00; /* N2: PLL出力分周 = 2 */ 
 	_PLLPRE	= 0b0000;  /* N1:PLL入力プリスケーラ = 2*/  
-	PLLFBD	= 0x002B; /* M : PLL倍率 = 43 */ 
+	PLLFBD	= 0x0029; /* M : PLL倍率 = 43 */ 
 
 	while( !OSCCONbits.LOCK ); /* waiting PLL Lock */ 
 }
