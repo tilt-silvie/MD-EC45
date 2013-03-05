@@ -22,6 +22,7 @@ int main(void)
 	initialize( );
 
 	initializeUart( 9, 8, FCY*2, 9600);
+	initializeHall();
 
 	while( 1 );
 	
