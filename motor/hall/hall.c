@@ -119,4 +119,34 @@ void	Test_getPhase( void )
 	}
 }
 
+
+void	Test_getFowardPhase( void )
+{
+	unsigned char	phase, f_phase;
+
+	printf("** Test_getFowardPhase **\n\n");
+
+	for( phase = 0; phase < 6; phase++ ){
+		f_phase	= getFowardPhase( phase );
+		printf("now phase = %d, f_phase = %d\n", phase, f_phase );
+	}
+
+	printf("\n");
+}
+
+
+void	Test_getBackwardPhase( void )
+{
+	unsigned char	phase, b_phase;
+
+	printf("** Test_getBackwardPhase **\n\n");
+
+	for( phase = 0; phase < 6; phase++ ){
+		b_phase	= getBackwardPhase( phase );
+		printf("now phase = %d, b_phase = %d\n", phase, b_phase );
+	}
+
+	printf("\n");
+}
+
 #endif

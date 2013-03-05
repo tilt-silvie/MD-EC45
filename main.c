@@ -22,7 +22,9 @@ int main(void)
 	initialize( );
 
 	initializeUart( 9, 8, FCY*2, 9600);
-	Test_getPhase();
+
+	Test_getFowardPhase();
+	Test_getBackwardPhase();
 
 	while( 1 );
 	

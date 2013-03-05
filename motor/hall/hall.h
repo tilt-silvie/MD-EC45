@@ -40,6 +40,8 @@ unsigned char	getBackwardPhase( unsigned char phase );
 #ifdef	DO_TEST
 
 void	Test_getPhase( void );
+void	Test_getFowardPhase( void );
+void	Test_getBackwardPhase( void );
 
 #endif
 /**************************************/
