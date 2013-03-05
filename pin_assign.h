@@ -6,6 +6,24 @@
 #define	LED_1	_LATB2
 
 /*---------------------------------*/
+/*bridge.c*/
+#define	ENABLE_1	_LATB10
+#define	ENABLE_2	_LATB12
+#define	ENABLE_3	_LATB14
+#define	INITIALIZE_ENABLE_1	_TRISB10	= 0;
+#define	INITIALIZE_ENABLE_2	_TRISB12	= 0;
+#define	INITIALIZE_ENABLE_3	_TRISB14	= 0;
+#define	FET_1	_LATB11
+#define	FET_2	_LATB13
+#define	FET_3	_LATB15
+#define	FET_MODE_1	_RP11R	
+#define	FET_MODE_2	_RP13R	
+#define	FET_MODE_3	_RP15R
+/*---------------------------------*/
+
+
+
+/*---------------------------------*/
 /*hall.c*/
 #define HALL_1  _RB4
 #define HALL_2  _RA3
