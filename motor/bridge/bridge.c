@@ -36,6 +36,57 @@ static void	initializePWM( void )
 
 
 /**************************************/
+unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
+{
+	switch( phase ){
+	case	0:
+		driveBridgeHighSide	( BRIDGE_3 );
+		driveBridgeLowSide	( BRIDGE_2 );
+		driveBridgeOff		( BRIDGE_1 );
+		break;
+			
+	case	1:
+		driveBridgeHighSide	( BRIDGE_1 );
+		driveBridgeLowSide	( BRIDGE_2 );
+		driveBridgeOff		( BRIDGE_3 );
+		break;
+			
+	case	2:
+		driveBridgeHighSide	( BRIDGE_1 );
+		driveBridgeLowSide	( BRIDGE_3 );
+		driveBridgeOff		( BRIDGE_2 );
+		break;
+			
+	case	3:
+		driveBridgeHighSide	( BRIDGE_2 );
+		driveBridgeLowSide	( BRIDGE_3 );
+		driveBridgeOff		( BRIDGE_1 );
+		break;
+			
+	case	4:
+		driveBridgeHighSide	( BRIDGE_2 );
+		driveBridgeLowSide	( BRIDGE_1 );
+		driveBridgeOff		( BRIDGE_3 );
+		break;
+			
+	case	5:
+		driveBridgeHighSide	( BRIDGE_3 );
+		driveBridgeLowSide	( BRIDGE_1 );
+		driveBridgeOff		( BRIDGE_2 );
+		break;
+
+	default:
+		driveBridgeOff		( BRIDGE_1 );
+		driveBridgeOff		( BRIDGE_2 );
+		driveBridgeOff		( BRIDGE_3 );
+		break;
+	}
+
+	SetDCOC1PWM( calculatePR( duty_percent ) );
+}
+
+
+
 static unsigned int	calculatePR( unsigned long duty_percent )
 {
     unsigned int    calculated_pr;
