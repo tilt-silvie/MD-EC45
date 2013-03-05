@@ -1,0 +1,3 @@
+[submodule "uart_dsPIC33F"]
+	path = uart_dsPIC33F
+	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/uart_dsPIC33F/
