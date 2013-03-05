@@ -184,4 +184,23 @@ void	Test_driveBridgeLowSide( void )
 	driveBridgeLowSide( BRIDGE_3 );
 }
 
+
+void	Test_calculatePR( void )
+{
+	unsigned long	duty, i;
+	unsigned int	pr;
+
+	for( i = 0; i < 10000; i++ );
+	printf("**Test_calculatePR**\n\n");
+
+	for( i = 0; i < 10000; i++ );
+
+	for( duty = 0; duty <= 101; duty ++ ){
+		pr	= calculatePR( duty );
+		printf("duty = %3ld : pr = %3d\n", duty, pr );
+		for( i = 0; i < 10000; i++ );
+	}
+}
+
+
 #endif

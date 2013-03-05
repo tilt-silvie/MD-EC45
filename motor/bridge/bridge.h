@@ -38,6 +38,7 @@ void	driveBridgeLowSide	( unsigned char num_of_bridge );
 #ifdef	DO_TEST
 
 void	Test_pinAssign( void );
+void	Test_calculatePR( void );
 
 #endif
 /**************************************/
