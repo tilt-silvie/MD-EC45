@@ -22,7 +22,20 @@ int main(void)
 	initializeUart( 9, 8, FCY*2, 9600);
 	
 	while( 1 ) {
-		putsUart("Hello");
+		unsigned int	i,j;
+		char	buffer[100];
+
+		for( i = 0; getcUart(&buffer[i]) != 1; i++){
+		}
+
+		if( i != 0 ){
+			for( j = 0; j < i; j++ ){
+				putcUart(buffer[j]);
+			}
+			printf("message send\n");
+		}
+
+		__delay_ms( 1000 );
 	}
 	return	0;
 }
