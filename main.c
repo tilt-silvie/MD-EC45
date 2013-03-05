@@ -13,6 +13,8 @@
 #include	"main.h"
 #include	"pin_assign.h"
 
+#include	"motor/hall/hall.h"
+
 /********************************************************/
 
 int main(void) 
@@ -20,9 +22,9 @@ int main(void)
 	initialize( );
 
 	initializeUart( 9, 8, FCY*2, 9600);
+
+	while( 1 );
 	
-	while( 1 ) {
-	}
 	return	0;
 }
 
