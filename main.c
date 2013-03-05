@@ -23,6 +23,8 @@ int main(void)
 
 	initializeUart( 9, 8, FCY*2, 57600);
 
+	initializeBridge();
+
 	Test_driveBridgeHighSide();
 	__delay_ms( 1000 );
 	Test_driveBridgeLowSide();

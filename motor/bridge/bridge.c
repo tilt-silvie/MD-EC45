@@ -18,6 +18,7 @@
 void	initializeBridge( void )
 {
 	initializePWM();
+	SetDCOC1PWM( 100 );
 }
 
 
@@ -62,20 +63,17 @@ void	driveBridgeHighSide	( unsigned char num_of_bridge )
 {
 	switch( num_of_bridge ){
 	case	BRIDGE_1:
-		/*PWM_MODE_1	= RP_OC1;*/
-		PWM_1	= 1;
+		PWM_MODE_1	= RP_OC1;
 		ENABLE_1	= 1;
 		break;
 
 	case	BRIDGE_2:
-		/*PWM_MODE_2	= RP_OC1;*/
-		PWM_2	= 1;
+		PWM_MODE_2	= RP_OC1;
 		ENABLE_2	= 1;
 		break;
 
 	case	BRIDGE_3:
-		/*PWM_MODE_3	= RP_OC1;*/
-		PWM_3	= 1;
+		PWM_MODE_3	= RP_OC1;
 		ENABLE_3	= 1;
 		break;
 
