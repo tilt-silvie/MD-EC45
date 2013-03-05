@@ -83,6 +83,8 @@ unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 	}
 
 	SetDCOC1PWM( calculatePR( duty_percent ) );
+
+	return	0;
 }
 
 
@@ -252,6 +254,19 @@ void	Test_calculatePR( void )
 		for( i = 0; i < 10000; i++ );
 	}
 }
+
+
+void	Test_driveBridge( void )
+{
+	unsigned char	phase;
+	unsigned long	i;
+
+	for( phase = 0; phase < 6; phase ++ ){
+		driveBridge( phase, 50 );
+		for( i = 0; i < 5000000; i++ );
+	}
+}
+
 
 
 #endif

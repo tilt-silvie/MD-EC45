@@ -40,6 +40,7 @@ static void	driveBridgeLowSide	( unsigned char num_of_bridge );
 
 void	Test_pinAssign( void );
 void	Test_calculatePR( void );
+void	Test_driveBridge( void );
 
 #endif
 /**************************************/

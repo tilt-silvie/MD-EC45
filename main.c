@@ -25,7 +25,7 @@ int main(void)
 
 	initializeBridge();
 	
-	Test_calculatePR();
+	Test_driveBridge();
 
 	while( 1 );
 	
