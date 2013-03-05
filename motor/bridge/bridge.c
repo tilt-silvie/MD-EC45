@@ -103,5 +103,18 @@ void	driveBridgeLowSide	( unsigned char num_of_bridge )
 /**************************************/
 #ifdef	DO_TEST
 
+void	Test_pinAssign( void ){
+	unsigned long	i;
+
+	while( 1 ){
+		ENABLE_1	= 1;	ENABLE_2 = 1;	ENABLE_3 = 1;
+		PWM_1		= 0;	PWM_2	= 0;	PWM_3 = 0;
+		for( i = 0; i < 1000000; i++ );
+		ENABLE_1	= 0;	ENABLE_2 = 0;	ENABLE_3 = 0;
+		PWM_1		= 1;	PWM_2	= 1;	PWM_3 = 1;
+		for( i = 0; i < 1000000; i++ );
+	}
+}
+
 
 #endif
