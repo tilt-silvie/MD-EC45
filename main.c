@@ -21,7 +21,8 @@ int main(void)
 {
 	initialize( );
 
-	initializeUart( 9, 8, FCY*2, 9600);
+	initializeUart( 9, 8, FCY*2, 57600);
+	initializeHall();
 
 	while( 1 );
 	

@@ -3,13 +3,29 @@
 /*Author	: Makito Ishikura*/
 /**************************************/
 
+#include	<xc.h>
 #include	"hall.h"
+#include	"../../pin_assign.h"
 
 #ifdef	DO_TEST
 #include	<stdio.h>
 #endif
 
+
 /**************************************/
+void	initializeHall( void )
+{
+	INITIALIZE_HALL_1
+	INITIALIZE_HALL_2
+	INITIALIZE_HALL_3
+
+	_CNIF	= 0; /*フラグクリア*/ 
+	_CNIP	= 7; /*割り込み優先度*/ 
+	_CNIE	= 1; /*割り込み許可*/ 
+}
+
+
+
 unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 )
 {
 	unsigned char	phase_conbined;
@@ -96,6 +112,15 @@ unsigned char	getBackwardPhase( unsigned char phase )
 /**************************************/
 
 
+/**************************************/
+void _ISR	_CNInterrupt( void )
+{
+	_CNIF	= 0;
+
+	unsigned char	phase;
+	phase = getPhase( HALL_1, HALL_2, HALL_3 );
+}
+/**************************************/
 
 
 /**************************************/

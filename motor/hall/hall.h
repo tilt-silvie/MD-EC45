@@ -29,6 +29,8 @@
 /**************************************/
 
 /**************************************/
+void	initializeHall( void );
+
 unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 );
 
 unsigned char	getFowardPhase( unsigned char phase );
