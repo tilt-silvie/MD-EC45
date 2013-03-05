@@ -13,6 +13,8 @@
 #include	"main.h"
 #include	"pin_assign.h"
 
+#include	"motor/hall/hall.h"
+
 /********************************************************/
 
 int main(void) 
