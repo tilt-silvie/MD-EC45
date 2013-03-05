@@ -12,6 +12,92 @@
 #endif
 
 /**************************************/
+void	driveBridgeOff		( unsigned char num_of_bridge )
+{
+	switch( num_of_bridge ){
+	case	BRIDGE_1:
+		ENABLE_1	= 0;
+		break;
+
+	case	BRIDGE_2:
+		ENABLE_2	= 0;
+		break;
+
+	case	BRIDGE_3:
+		ENABLE_3	= 0;
+		break;
+
+	default:
+		ENABLE_1	= 0;
+		ENABLE_2	= 0;
+		ENABLE_3	= 0;
+		break;
+	}
+}
+
+
+void	driveBridgeHighSide	( unsigned char num_of_bridge )
+{
+	switch( num_of_bridge ){
+	case	BRIDGE_1:
+		PWM_MODE_1	= RP_OC1;
+		ENABLE_1	= 1;
+		break;
+
+	case	BRIDGE_2:
+		PWM_MODE_2	= RP_OC1;
+		ENABLE_2	= 1;
+		break;
+
+	case	BRIDGE_3:
+		PWM_MODE_3	= RP_OC1;
+		ENABLE_3	= 1;
+		break;
+
+	default:
+		ENABLE_1	= 0;
+		ENABLE_2	= 0;
+		ENABLE_3	= 0;
+		break;
+	}
+}
+	
+
+void	driveBridgeLowSide	( unsigned char num_of_bridge )
+{
+	switch( num_of_bridge ){
+	case	BRIDGE_1:
+		PWM_MODE_1	= RP_NULL;
+		PWM_1		= 0;
+		ENABLE_1	= 1;
+		break;
+
+	case	BRIDGE_2:
+		PWM_MODE_2	= RP_NULL;
+		PWM_3		= 0;
+		ENABLE_2	= 1;
+		break;
+
+	case	BRIDGE_3:
+		PWM_MODE_3	= RP_NULL;
+		PWM_3		= 0;
+		ENABLE_3	= 1;
+		break;
+
+	default:
+		ENABLE_1	= 0;
+		ENABLE_2	= 0;
+		ENABLE_3	= 0;
+		break;
+	}
+}
+
+
+/**************************************/
+
+
+
+/**************************************/
 /*テストコード*/
 /**************************************/
 #ifdef	DO_TEST

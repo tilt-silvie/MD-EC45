@@ -11,6 +11,19 @@
 /*#define	DO_TEST*/
 /**************************************/
 
+
+
+/**************************************/
+#define	OFF			0
+#define	HIGH_SIDE	1
+#define	LOW_SIDE	2
+/**************************************/
+
+
+/**************************************/
+void	driveBridgeOff		( unsigned char num_of_bridge );
+void	driveBridgeHighSide	( unsigned char num_of_bridge );
+void	driveBridgeLowSide	( unsigned char num_of_bridge );
 /**************************************/
 
 
