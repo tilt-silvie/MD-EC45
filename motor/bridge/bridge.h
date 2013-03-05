@@ -23,6 +23,9 @@
 /**************************************/
 void	initializeBridge( void );
 void	initializePWM( void );
+
+unsigned int	calculatePR( unsigned long duty_percent );
+
 void	driveBridgeOff		( unsigned char num_of_bridge );
 void	driveBridgeHighSide	( unsigned char num_of_bridge );
 void	driveBridgeLowSide	( unsigned char num_of_bridge );

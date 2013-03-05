@@ -14,11 +14,17 @@
 #include	<stdio.h>
 #endif
 
+
+/**************************************/
+static unsigned int	G_max_pr2 = 800;
+/**************************************/
+
+
+
 /**************************************/
 void	initializeBridge( void )
 {
 	initializePWM();
-	SetDCOC1PWM( 100 );
 }
 
 
@@ -28,6 +34,22 @@ void	initializePWM( void )
 	OpenOC1( OC_IDLE_CON & OC_TIMER2_SRC & OC_PWM_FAULT_PIN_DISABLE, 0, 0 );
 }
 
+
+/**************************************/
+unsigned int	calculatePR( unsigned long duty_percent )
+{
+    unsigned int    calculated_pr;
+
+    calculated_pr   = duty_percent * G_max_pr2 / 100;
+	if( calculated_pr >= G_max_pr2 ){
+		calculated_pr	= G_max_pr2 - 5;
+	}
+
+	return	calculated_pr;
+}
+
+
+/**************************************/
 
 void	driveBridgeOff		( unsigned char num_of_bridge )
 {
