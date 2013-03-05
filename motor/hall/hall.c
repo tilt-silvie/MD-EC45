@@ -119,7 +119,6 @@ void _ISR	_CNInterrupt( void )
 
 	unsigned char	phase;
 	phase = getPhase( HALL_1, HALL_2, HALL_3 );
-	printf("phase = %d\n", phase );
 }
 /**************************************/
 
