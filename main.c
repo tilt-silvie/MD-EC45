@@ -22,8 +22,6 @@ int main(void)
 	initializeUart( 9, 8, FCY*2, 9600);
 	
 	while( 1 ) {
-		printf("AIUEO \n");
-		
 	}
 	return	0;
 }
