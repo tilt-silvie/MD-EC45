@@ -13,8 +13,6 @@
 #include	"main.h"
 #include	"pin_assign.h"
 
-#include	"motor/bridge/bridge.h"
-
 /********************************************************/
 
 int main(void) 
@@ -22,10 +20,6 @@ int main(void)
 	initialize( );
 
 	initializeUart( 9, 8, FCY*2, 57600);
-
-	initializeBridge();
-	
-	Test_driveBridge();
 
 	while( 1 );
 	
