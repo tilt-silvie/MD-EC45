@@ -14,9 +14,9 @@
 
 
 /**************************************/
-#define	OFF			0
-#define	HIGH_SIDE	1
-#define	LOW_SIDE	2
+#define	BRIDGE_1	1
+#define	BRIDGE_2	2
+#define	BRIDGE_3	3
 /**************************************/
 
 

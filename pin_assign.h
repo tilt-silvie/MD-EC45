@@ -13,12 +13,12 @@
 #define	INITIALIZE_ENABLE_1	_TRISB10	= 0;
 #define	INITIALIZE_ENABLE_2	_TRISB12	= 0;
 #define	INITIALIZE_ENABLE_3	_TRISB14	= 0;
-#define	FET_1	_LATB11
-#define	FET_2	_LATB13
-#define	FET_3	_LATB15
-#define	FET_MODE_1	_RP11R	
-#define	FET_MODE_2	_RP13R	
-#define	FET_MODE_3	_RP15R
+#define	PWM_1	_LATB11
+#define	PWM_2	_LATB13
+#define	PWM_3	_LATB15
+#define	PWM_MODE_1	_RP11R	
+#define	PWM_MODE_2	_RP13R	
+#define	PWM_MODE_3	_RP15R
 /*---------------------------------*/
 
 

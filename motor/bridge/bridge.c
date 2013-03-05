@@ -4,6 +4,7 @@
 /**************************************/
 
 #include	<xc.h>
+#include	"peripheral_pin.h"
 #include	"bridge.h"
 #include	"../../pin_assign.h"
 
@@ -40,7 +41,7 @@ void	driveBridgeHighSide	( unsigned char num_of_bridge )
 {
 	switch( num_of_bridge ){
 	case	BRIDGE_1:
-		PWM_MODE_1	= RP_OC1;
+                    PWM_MODE_1	= RP_OC1;
 		ENABLE_1	= 1;
 		break;
 
