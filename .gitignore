@@ -10,3 +10,6 @@ funclist
 #Vimで作られる一時ファイルを拒否
 *~
 *.swp
+
+#Taglist用
+tags
