@@ -13,6 +13,19 @@
 #endif
 
 /**************************************/
+void	initializeBridge( void )
+{
+	initializePWM();
+}
+
+
+void	initializePWM( void )
+{
+	OpenTimer2( T2_ON & T2_IDLE_STOP & T2_GATE_OFF & T2_PS_1_1 & T2_SOURCE_INT,  800 - 1 ); /* 50kHz */ 
+	OpenOC1( OC_IDLE_CON & OC_TIMER2_SRC & OC_PWM_FAULT_PIN_DISABLE, 0, 0 );
+}
+
+
 void	driveBridgeOff		( unsigned char num_of_bridge )
 {
 	switch( num_of_bridge ){

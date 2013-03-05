@@ -21,6 +21,8 @@
 
 
 /**************************************/
+void	initializeBridge( void );
+void	initializePWM( void );
 void	driveBridgeOff		( unsigned char num_of_bridge );
 void	driveBridgeHighSide	( unsigned char num_of_bridge );
 void	driveBridgeLowSide	( unsigned char num_of_bridge );
