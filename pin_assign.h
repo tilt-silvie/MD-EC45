@@ -6,6 +6,21 @@
 #define	LED_1	_LATB2
 
 /*---------------------------------*/
+/*bridge.c*/
+#define	ENABLE_1	_LATB10
+#define	ENABLE_2	_LATB12
+#define	ENABLE_3	_LATB14
+#define	PWM_1	_LATB11
+#define	PWM_2	_LATB13
+#define	PWM_3	_LATB15
+#define	PWM_MODE_1	_RP11R	
+#define	PWM_MODE_2	_RP13R	
+#define	PWM_MODE_3	_RP15R
+/*---------------------------------*/
+
+
+
+/*---------------------------------*/
 /*hall.c*/
 #define HALL_1  _RB4
 #define HALL_2  _RA3
