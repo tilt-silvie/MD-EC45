@@ -23,9 +23,15 @@ int main(void)
 
 	initializeUart( 9, 8, FCY*2, 57600);
 
-	Test_pinAssign();
+	Test_driveBridgeHighSide();
+	__delay_ms( 1000 );
+	Test_driveBridgeLowSide();
+	__delay_ms( 1000 );
+	Test_driveBridgeOff();
+	__delay_ms( 1000 );
 	while( 1 );
 	
+
 	return	0;
 }
 
