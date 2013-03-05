@@ -22,6 +22,7 @@ int main(void)
 	initializeUart( 9, 8, FCY*2, 9600);
 	
 	while( 1 ) {
+		putsUart("Hello");
 	}
 	return	0;
 }
