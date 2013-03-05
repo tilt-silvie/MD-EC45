@@ -5,6 +5,10 @@
 
 #include	"hall.h"
 
+#ifdef	DO_TEST
+#include	<stdio.h>
+#endif
+
 /**************************************/
 unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 )
 {
@@ -37,3 +41,29 @@ unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned cha
 }
 
 /**************************************/
+
+
+
+
+/**************************************/
+/*テストコード*/
+/**************************************/
+#ifdef	DO_TEST
+
+void	Test_getPhase( void )
+{
+	unsigned char	hall_1, hall_2, hall_3;
+	unsigned char	phase;
+
+	for( hall_1 = 0; hall_1 <= 1; hall_1++ ){
+		for( hall_2 = 0; hall_2 <= 1; hall_2++ ){
+			for( hall_3 = 0; hall_3 <= 1; hall_3++ ){
+				phase	= getPhase( hall_1, hall_2, hall_3 );
+				printf( "Input: hall_1=%d,hall_2=%d, hall_3=%d\n", hall_1, hall_2, hall_3 );
+				printf( "Output: Phase = %d\n\n", phase );
+			}
+		}
+	}
+}
+
+#endif

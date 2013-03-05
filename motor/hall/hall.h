@@ -6,6 +6,9 @@
 #ifndef	_HALL_H_
 #define	_HALL_H_
 
+
+#define	DO_TEST
+
 /**************************************/
 
 /**************************************/
@@ -20,6 +23,16 @@
 /**************************************/
 unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 );
 
+/**************************************/
+
+
+
+/**************************************/
+#ifdef	DO_TEST
+
+void	Test_getPhase( void );
+
+#endif
 /**************************************/
 
 #endif	/*_HALL_H_*/
