@@ -28,7 +28,7 @@ void	initializeBridge( void )
 }
 
 
-void	initializePWM( void )
+static void	initializePWM( void )
 {
 	OpenTimer2( T2_ON & T2_IDLE_STOP & T2_GATE_OFF & T2_PS_1_1 & T2_SOURCE_INT,  800 - 1 ); /* 50kHz */ 
 	OpenOC1( OC_IDLE_CON & OC_TIMER2_SRC & OC_PWM_FAULT_PIN_DISABLE, 0, 0 );
@@ -36,7 +36,7 @@ void	initializePWM( void )
 
 
 /**************************************/
-unsigned int	calculatePR( unsigned long duty_percent )
+static unsigned int	calculatePR( unsigned long duty_percent )
 {
     unsigned int    calculated_pr;
 
@@ -51,7 +51,7 @@ unsigned int	calculatePR( unsigned long duty_percent )
 
 /**************************************/
 
-void	driveBridgeOff		( unsigned char num_of_bridge )
+static void	driveBridgeOff		( unsigned char num_of_bridge )
 {
 	switch( num_of_bridge ){
 	case	BRIDGE_1:
@@ -81,7 +81,7 @@ void	driveBridgeOff		( unsigned char num_of_bridge )
 }
 
 
-void	driveBridgeHighSide	( unsigned char num_of_bridge )
+static void	driveBridgeHighSide	( unsigned char num_of_bridge )
 {
 	switch( num_of_bridge ){
 	case	BRIDGE_1:
@@ -108,7 +108,7 @@ void	driveBridgeHighSide	( unsigned char num_of_bridge )
 }
 	
 
-void	driveBridgeLowSide	( unsigned char num_of_bridge )
+static void	driveBridgeLowSide	( unsigned char num_of_bridge )
 {
 	switch( num_of_bridge ){
 	case	BRIDGE_1:
