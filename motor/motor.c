@@ -11,6 +11,8 @@
 #include	"bridge/bridge.h"
 #include	"../assert/assert.h"
 
+#define	FCY	39613750
+#include	<libpic30.h>
 
 /**************************************/
 #define	SUPPLY_VOLTAGE_IS_UNDER_THE_GND	0xFFFF
@@ -200,6 +202,32 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 /**************************************/
 /*テストコード*/
 /**************************************/
+void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsigned long period_ms )
+{
+	/*モータをサイン関数に法って動かす関数*/
+	const double	PI_2_ = 6.28, STEP_ = 0.0628;
+
+	unsigned char	i;
+	unsigned long	delay;
+	double	voltage;
+
+	/*周期が短すぎると危険なため，制限をかける(500ms)*/
+	if( period_ms < 500 ){
+		period_ms	= 500;
+	}
+	delay	= period_ms / 100;
+
+	for( i = 0; i < num_loop; i++ ){
+		double	rad;
+
+		for( rad = 0.0; rad < PI_2_; rad+= STEP_ ){
+			voltage	= max_voltage * sin( rad );
+			driveMotor( voltage );
+			__delay_ms( delay );
+		}
+	}
+}
+
 #ifdef	_DEBUG
 
 void	Test_driveMotor( void )
