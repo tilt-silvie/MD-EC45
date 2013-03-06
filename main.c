@@ -12,6 +12,7 @@
 #include	"uart_dsPIC33F/uart_dsPIC33F.h"
 #include	"main.h"
 #include	"pin_assign.h"
+#include	"motor/motor.h"
 
 /********************************************************/
 
@@ -20,6 +21,8 @@ int main(void)
 	initialize( );
 
 	initializeUart( 9, 8, FCY*2, 57600);
+
+	initializeMotor();
 
 	while( 1 );
 	

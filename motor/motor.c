@@ -14,7 +14,7 @@
 #endif
 
 /**************************************/
-void	initializMotor( void )
+void	initializeMotor( void )
 {
 	initializeHall();
 	initializeBridge();
@@ -27,8 +27,16 @@ void _ISR	_CNInterrupt( void )
 {
 	_CNIF	= 0;
 
-	unsigned char	phase;
-	phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
+	unsigned char	now_phase, next_phase;
+
+	now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
+	next_phase	= getFowardPhaseHall( now_phase );
+
+	driveBridge( next_phase, 20 );
+
+#ifdef	DO_TEST
+	printf("now phase = %d : next phase = %d\n", now_phase, next_phase );
+#endif
 }
 /**************************************/
 
