@@ -269,9 +269,14 @@ void	Test_driveBridge( void )
 	unsigned char	phase;
 	unsigned long	i;
 
-	for( phase = 0; phase < 6; phase ++ ){
+	for( i = 0; i < 1000000; i++ );
+	printf("**Test_driveBridge**\n\n");
+	for( i = 0; i < 5000000; i++ );
+
+	for( phase = 1; phase <= 6; phase ++ ){
 		driveBridge( phase, 50 );
-		for( i = 0; i < 5000000; i++ );
+		printf("phase = %d\n", phase );
+		for( i = 0; i < 10000000; i++ );
 	}
 }
 

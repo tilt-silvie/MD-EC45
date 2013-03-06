@@ -18,6 +18,8 @@ void	initializeMotor( void )
 {
 	initializeHall();
 	initializeBridge();
+	Test_driveBridge();
+	while(1);
 }
 /**************************************/
 
