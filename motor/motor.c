@@ -46,7 +46,7 @@ void	initializeMotor( void )
 	/*Test_getFowardExcitationPhase();*/
 	/*Test_getBackwardExcitationPhase();*/
 	/*Test_getDicretion();*/
-	Test_getDuty();
+	/*Test_getDuty();*/
 	/*Test_driveMotor();*/
 #endif
 
@@ -115,7 +115,8 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 	driveBridge( next_phase, duty );
 
 #ifdef	_DEBUG
-	printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );
+	printf("H1: %d ,H2: %d ,H3: %d || Now_Phase:%d ,NextPhase: %d (Dir: %d) \n", HALL_1, HALL_2, HALL_3, now_phase, next_phase, G_direction_rotation );
+	/*printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );*/
 #endif
 }
 /**************************************/
