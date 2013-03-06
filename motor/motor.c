@@ -13,6 +13,14 @@
 #include	<stdio.h>
 #endif
 
+/**************************************/
+void	initializMotor( void )
+{
+	initializeHall();
+	initializeBridge();
+}
+/**************************************/
+
 
 /**************************************/
 void _ISR	_CNInterrupt( void )
