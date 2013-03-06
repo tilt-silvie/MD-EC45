@@ -27,6 +27,8 @@ void	initializeMotor( void );
 /*テストコード*/
 /**************************************/
 #ifdef	DO_TEST
+void	Test_getFowardExcitationPhase( void );
+void	Test_getBackwardExcitationPhase( void );
 #endif
 
 #endif	/*_MOTOR_H_*/
