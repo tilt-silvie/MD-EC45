@@ -38,7 +38,9 @@ void	initializeMotor( void )
 {
 	initializeHall();
 	initializeBridge();
-	G_direction_rotation	= CCW;
+	G_direction_rotation	= BRAKE;
+	G_duty	= 0;
+	exciteWinding( G_direction_rotation, G_duty );
 
 #ifdef	_DEBUG
 	/*Test_getFowardExcitationPhase();*/
