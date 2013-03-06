@@ -14,11 +14,19 @@
 #include	<stdio.h>
 #endif
 
+/**************************************/
+static void	initializePWM( void );
+static unsigned int	calculatePR( unsigned long duty_percent );
+static void	driveBridgeOff		( unsigned char num_of_bridge );
+static void	driveBridgeHighSide	( unsigned char num_of_bridge );
+static void	driveBridgeLowSide	( unsigned char num_of_bridge );
+/**************************************/
+
+
 
 /**************************************/
 static unsigned int	G_max_pr2 = 800;
 /**************************************/
-
 
 
 /**************************************/
