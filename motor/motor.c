@@ -45,6 +45,7 @@ void	initializeMotor( void )
 	/*Test_getBackwardExcitationPhase();*/
 	/*Test_getDicretion();*/
 	/*Test_getDuty();*/
+	Test_driveMotor();
 #endif
 
 }
@@ -187,6 +188,23 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 /*テストコード*/
 /**************************************/
 #ifdef	_DEBUG
+
+void	Test_driveMotor( void )
+{
+	unsigned long	i;
+
+	for( i = 0; i < 1000000; i++ );
+	printf("\n\n**Test_driveMotor**\n");
+	printf("--Test start!--\n");
+
+	/* **** */
+	ASSERT( driveMotor( 12.0 ) == 0 )
+	ASSERT( driveMotor( 6 ) == 0 )
+	/* **** */
+
+	printf("-- Test Passed! --\n");
+}
+
 
 void	Test_getFowardExcitationPhase( void )
 {

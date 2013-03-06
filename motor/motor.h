@@ -28,6 +28,7 @@ unsigned char	driveMotor( double voltage );
 /*テストコード*/
 /**************************************/
 #ifdef	_DEBUG
+void	Test_driveMotor( void );
 void	Test_getFowardExcitationPhase( void );
 void	Test_getBackwardExcitationPhase( void );
 void	Test_getDicretion( void );
