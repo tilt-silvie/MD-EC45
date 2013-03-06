@@ -26,7 +26,7 @@ void	initializeHall( void )
 
 
 
-unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 )
+unsigned char	getPhaseHall( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 )
 {
 	unsigned char	phase_conbined;
 
@@ -57,7 +57,7 @@ unsigned char	getPhase( unsigned char hall_1, unsigned char hall_2, unsigned cha
 }
 
 
-unsigned char	getFowardPhase( unsigned char phase )
+unsigned char	getFowardPhaseHall( unsigned char phase )
 {
 	switch( phase ){
 	case	PHASE_1:
@@ -84,7 +84,7 @@ unsigned char	getFowardPhase( unsigned char phase )
 }
 
 
-unsigned char	getBackwardPhase( unsigned char phase )
+unsigned char	getBackwardPhaseHall( unsigned char phase )
 {
 	switch( phase ){
 	case	PHASE_1:
