@@ -33,9 +33,6 @@ void	initializeHall( void );
 
 unsigned char	getPhaseHall( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 );
 
-unsigned char	getFowardPhaseHall( unsigned char phase );
-unsigned char	getBackwardPhaseHall( unsigned char phase );
-
 /**************************************/
 
 
@@ -44,8 +41,8 @@ unsigned char	getBackwardPhaseHall( unsigned char phase );
 #ifdef	DO_TEST
 
 void	Test_getPhase( void );
-void	Test_getFowardPhase( void );
-void	Test_getBackwardPhase( void );
+/*void	Test_getFowardPhase( void );*/
+/*void	Test_getBackwardPhase( void );*/
 
 #endif
 /**************************************/

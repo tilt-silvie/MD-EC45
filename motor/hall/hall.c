@@ -57,58 +57,6 @@ unsigned char	getPhaseHall( unsigned char hall_1, unsigned char hall_2, unsigned
 }
 
 
-unsigned char	getFowardPhaseHall( unsigned char phase )
-{
-	switch( phase ){
-	case	HALL_PHASE_1:
-		return	HALL_PHASE_2;
-
-	case	HALL_PHASE_2:
-		return	HALL_PHASE_3;
-
-	case	HALL_PHASE_3:
-		return	HALL_PHASE_4;
-
-	case	HALL_PHASE_4:
-		return	HALL_PHASE_5;
-
-	case	HALL_PHASE_5:
-		return	HALL_PHASE_6;
-
-	case	HALL_PHASE_6:
-		return	HALL_PHASE_1;
-
-	default:
-		return	0xFF;
-	}
-}
-
-
-unsigned char	getBackwardPhaseHall( unsigned char phase )
-{
-	switch( phase ){
-	case	HALL_PHASE_1:
-		return	HALL_PHASE_6;
-
-	case	HALL_PHASE_2:
-		return	HALL_PHASE_5;
-
-	case	HALL_PHASE_3:
-		return	HALL_PHASE_4;
-
-	case	HALL_PHASE_4:
-		return	HALL_PHASE_3;
-
-	case	HALL_PHASE_5:
-		return	HALL_PHASE_2;
-
-	case	HALL_PHASE_6:
-		return	HALL_PHASE_1;
-
-	default:
-		return	0xFF;
-	}
-}
 /**************************************/
 
 

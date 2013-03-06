@@ -20,7 +20,8 @@ static unsigned char	G_direction_rotation = BRAKE;
 
 
 /**************************************/
-static unsigned char	getNexPhase( unsigned char now_phase, unsigned char direction_rotation );
+static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
+static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
 
 
@@ -51,17 +52,56 @@ void _ISR	_CNInterrupt( void )
 }
 
 
-static unsigned char	getNexPhase( unsigned char now_phase, unsigned char direction_rotation )
+static unsigned char	getFowardExcitationPhase( unsigned char hall_phase )
 {
-	switch( direction_rotation ){
-	case	CW:
-		return	getFowardPhaseHall( now_phase );
-	case	CCW:
-		return	getBackwardPhaseHall( now_phase );
-	case	BRAKE:
-		return	PHASE_BRAKE;
+	switch( hall_phase ){
+	case	HALL_PHASE_1:
+		return	EXCITATION_PHASE_2;
+
+	case	HALL_PHASE_2:
+		return	EXCITATION_PHASE_3;
+
+	case	HALL_PHASE_3:
+		return	EXCITATION_PHASE_4;
+
+	case	HALL_PHASE_4:
+		return	EXCITATION_PHASE_5;
+
+	case	HALL_PHASE_5:
+		return	EXCITATION_PHASE_6;
+
+	case	HALL_PHASE_6:
+		return	EXCITATION_PHASE_1;
+
 	default:
-		return	PHASE_BRAKE;
+		return	EXCITATION_PHASE_BRAKE;
+	}
+}
+
+
+static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
+{
+	switch( hall_phase ){
+	case	HALL_PHASE_1:
+		return	EXCITATION_PHASE_6;
+
+	case	HALL_PHASE_2:
+		return	EXCITATION_PHASE_5;
+
+	case	HALL_PHASE_3:
+		return	EXCITATION_PHASE_4;
+
+	case	HALL_PHASE_4:
+		return	EXCITATION_PHASE_3;
+
+	case	HALL_PHASE_5:
+		return	EXCITATION_PHASE_2;
+
+	case	HALL_PHASE_6:
+		return	EXCITATION_PHASE_1;
+
+	default:
+		return	EXCITATION_PHASE_BRAKE;
 	}
 }
 /**************************************/
