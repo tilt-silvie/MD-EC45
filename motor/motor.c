@@ -4,6 +4,7 @@
 /****************************************/
 
 #include	<xc.h>
+#include	<stdlib.h>
 #include	"motor.h"
 #include	"../pin_assign.h"
 #include	"hall/hall.h"
@@ -20,6 +21,7 @@ static unsigned long	G_duty = 50;
 
 /**************************************/
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty );
+static unsigned char	getDirection( double voltage );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
 static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
@@ -50,6 +52,10 @@ unsigned char	driveMotor( double voltage )
 	 */
 }
 
+static unsigned char	getDirection( double voltage )
+{
+	return	(voltage < 0) ? ? CCW : CW;
+}
 
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty )
 {
