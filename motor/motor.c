@@ -16,6 +16,7 @@
 /**************************************/
 /*グローバル変数*/
 static unsigned char	G_direction_rotation = BRAKE;
+static unsigned long	G_duty = 50;
 /**************************************/
 
 
@@ -32,8 +33,6 @@ void	initializeMotor( void )
 	initializeBridge();
 	G_direction_rotation	= BRAKE;
 
-	Test_getFowardExcitationPhase();
-	Test_getBackwardExcitationPhase();
 }
 /**************************************/
 
@@ -43,11 +42,21 @@ void _ISR	_CNInterrupt( void )
 {
 	_CNIF	= 0;
 
-	unsigned char	now_phase, next_phase;
+	if( G_direction_rotation == BRAKE ){
+		driveBridge( EXCITATION_PHASE_BRAKE, 0 );
 
-	now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
+	}else{
+		unsigned char	now_phase, next_phase;
 
-	driveBridge( next_phase, 20 );
+		now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
+
+		if( G_direction_rotation == CW ){
+			next_phase	= getFowardExcitationPhase( now_phase );
+		}else{
+			next_phase	= getBackwardExcitationPhase( now_phase );
+		}
+		driveBridge( next_phase, G_duty );
+	}
 
 #ifdef	DO_TEST
 	printf("now phase = %d : next phase = %d\n", now_phase, next_phase );
