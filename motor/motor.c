@@ -34,8 +34,11 @@ void	initializeMotor( void )
 	initializeBridge();
 	G_direction_rotation	= CCW;
 
+#ifdef	_DEBUG
 	Test_getFowardExcitationPhase();
 	Test_getBackwardExcitationPhase();
+	Test_getDicretion();
+#endif
 
 }
 /**************************************/
@@ -54,7 +57,7 @@ unsigned char	driveMotor( double voltage )
 
 static unsigned char	getDirection( double voltage )
 {
-	return	(voltage < 0) ? ? CCW : CW;
+	return	(voltage < 0) ? CCW : CW;
 }
 
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty )
@@ -195,6 +198,26 @@ void	Test_getBackwardExcitationPhase( void )
 	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_4 )
 	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_5 )
 	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
+	/* **** */
+
+	printf("\n-- Test Passed! --\n");
+}
+
+
+void	Test_getDicretion( void )
+{
+	unsigned long	i;
+
+	for( i = 0; i < 1000000; i++ );
+	printf("\n\n**Test_getDicretion**\n");
+	printf("\n--Test start!--\n");
+
+	/* **** */
+	ASSERT( getDirection( 12.0 ) == CW )
+	ASSERT( getDirection( -12.0 ) == CCW )
+	ASSERT( getDirection( 10 ) == CW )
+	ASSERT( getDirection( 0.0 ) == CW )
+	ASSERT( getDirection( 0 ) == CW )
 	/* **** */
 
 	printf("\n-- Test Passed! --\n");

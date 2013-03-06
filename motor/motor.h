@@ -30,6 +30,7 @@ unsigned char	driveMotor( double voltage );
 #ifdef	_DEBUG
 void	Test_getFowardExcitationPhase( void );
 void	Test_getBackwardExcitationPhase( void );
+void	Test_getDicretion( void );
 #endif
 
 #endif	/*_MOTOR_H_*/
