@@ -13,13 +13,13 @@
 
 
 /**************************************/
-#define	EXCITATION_PHASE_BRAKE	0
-#define	EXCITATION_PHASE_1		1
-#define	EXCITATION_PHASE_2		2
-#define	EXCITATION_PHASE_3		3
-#define	EXCITATION_PHASE_4		4
-#define	EXCITATION_PHASE_5		5
-#define	EXCITATION_PHASE_6		6
+#define	EXCITATION_BRAKE	0
+#define	EXCITATION_3_2		32
+#define	EXCITATION_1_2		12
+#define	EXCITATION_1_3		13
+#define	EXCITATION_2_3		23
+#define	EXCITATION_2_1		21
+#define	EXCITATION_3_1		31
 /**************************************/
 
 

@@ -47,43 +47,43 @@ static void	initializePWM( void )
 unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 {
 	switch( phase ){
-	case	EXCITATION_PHASE_1:
+	case	EXCITATION_3_2:
 		driveBridgeHighSide	( BRIDGE_3 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeOff		( BRIDGE_1 );
 		break;
 			
-	case	EXCITATION_PHASE_2:
+	case	EXCITATION_1_2:
 		driveBridgeHighSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeOff		( BRIDGE_3 );
 		break;
 			
-	case	EXCITATION_PHASE_3:
+	case	EXCITATION_1_3:
 		driveBridgeHighSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_3 );
 		driveBridgeOff		( BRIDGE_2 );
 		break;
 			
-	case	EXCITATION_PHASE_4:
+	case	EXCITATION_2_3:
 		driveBridgeHighSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_3 );
 		driveBridgeOff		( BRIDGE_1 );
 		break;
 			
-	case	EXCITATION_PHASE_5:
+	case	EXCITATION_2_1:
 		driveBridgeHighSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_3 );
 		break;
 			
-	case	EXCITATION_PHASE_6:
+	case	EXCITATION_3_1:
 		driveBridgeHighSide	( BRIDGE_3 );
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_2 );
 		break;
 
-	case	EXCITATION_PHASE_BRAKE:
+	case	EXCITATION_BRAKE:
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_3 );

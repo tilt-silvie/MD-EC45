@@ -105,10 +105,10 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 		next_phase	= getBackwardExcitationPhase( now_phase );
 		break;
 	case	BRAKE:
-		next_phase	= EXCITATION_PHASE_BRAKE;
+		next_phase	= EXCITATION_BRAKE;
 		break;
 	default:
-		next_phase	= EXCITATION_PHASE_BRAKE;
+		next_phase	= EXCITATION_BRAKE;
 		break;
 	}
 
@@ -145,25 +145,25 @@ static unsigned char	getFowardExcitationPhase( unsigned char hall_phase )
 {
 	switch( hall_phase ){
 	case	HALL_PHASE_1:
-		return	EXCITATION_PHASE_2;
+		return	EXCITATION_1_2;
 
 	case	HALL_PHASE_2:
-		return	EXCITATION_PHASE_3;
+		return	EXCITATION_1_3;
 
 	case	HALL_PHASE_3:
-		return	EXCITATION_PHASE_4;
+		return	EXCITATION_2_3;
 
 	case	HALL_PHASE_4:
-		return	EXCITATION_PHASE_5;
+		return	EXCITATION_2_1;
 
 	case	HALL_PHASE_5:
-		return	EXCITATION_PHASE_6;
+		return	EXCITATION_3_1;
 
 	case	HALL_PHASE_6:
-		return	EXCITATION_PHASE_1;
+		return	EXCITATION_3_2;
 
 	default:
-		return	EXCITATION_PHASE_BRAKE;
+		return	EXCITATION_BRAKE;
 	}
 }
 
@@ -172,25 +172,25 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 {
 	switch( hall_phase ){
 	case	HALL_PHASE_1:
-		return	EXCITATION_PHASE_5;
+		return	EXCITATION_2_1;
 
 	case	HALL_PHASE_2:
-		return	EXCITATION_PHASE_6;
+		return	EXCITATION_3_1;
 
 	case	HALL_PHASE_3:
-		return	EXCITATION_PHASE_1;
+		return	EXCITATION_3_2;
 
 	case	HALL_PHASE_4:
-		return	EXCITATION_PHASE_2;
+		return	EXCITATION_1_2;
 
 	case	HALL_PHASE_5:
-		return	EXCITATION_PHASE_3;
+		return	EXCITATION_1_3;
 
 	case	HALL_PHASE_6:
-		return	EXCITATION_PHASE_4;
+		return	EXCITATION_2_3;
 
 	default:
-		return	EXCITATION_PHASE_BRAKE;
+		return	EXCITATION_BRAKE;
 	}
 }
 /**************************************/
