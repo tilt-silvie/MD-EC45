@@ -112,16 +112,6 @@ unsigned char	getBackwardPhaseHall( unsigned char phase )
 /**************************************/
 
 
-/**************************************/
-void _ISR	_CNInterrupt( void )
-{
-	_CNIF	= 0;
-
-	unsigned char	phase;
-	phase = getPhase( HALL_1, HALL_2, HALL_3 );
-}
-/**************************************/
-
 
 /**************************************/
 /*テストコード*/
