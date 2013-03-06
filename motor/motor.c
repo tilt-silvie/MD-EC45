@@ -13,7 +13,7 @@
 
 
 /**************************************/
-#define	TARGET_VOLTAGE_TOO_HIGH	0xFFFF
+#define	SUPPLY_VOLTAGE_IS_UNDER_THE_GND	0xFFFF
 /**************************************/
 
 
@@ -78,11 +78,11 @@ static unsigned long	getDuty( double target_voltage, double supply_voltage )
 	target_voltage	= fabs( target_voltage );
 
 	if( supply_voltage < 0 ){
-		return	TARGET_VOLTAGE_TOO_HIGH;
+		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
 	}
 
 	if( target_voltage > supply_voltage ){
-		return	TARGET_VOLTAGE_TOO_HIGH;
+		return	100;
 	}
 	
 	return	target_voltage / supply_voltage * 100;
@@ -293,8 +293,8 @@ void	Test_getDuty( void )
 	ASSERT( getDuty( 10, 10 ) == 100 )
 	ASSERT( getDuty( -10, 10 ) == 100 )
 	ASSERT( getDuty( 0, 10 ) == 0 )
-	ASSERT( getDuty( 10, 5 ) == TARGET_VOLTAGE_TOO_HIGH )
-	ASSERT( getDuty( 10, 0 ) == TARGET_VOLTAGE_TOO_HIGH )
+	ASSERT( getDuty( 10, 5 ) == 100 )
+	ASSERT( getDuty( 10, 0 ) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND )
 	/* **** */
 
 	printf("-- Test Passed! --\n");
