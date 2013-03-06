@@ -83,6 +83,12 @@ unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 		driveBridgeOff		( BRIDGE_2 );
 		break;
 
+	case	EXCITATION_PHASE_BRAKE:
+		driveBridgeLowSide	( BRIDGE_1 );
+		driveBridgeLowSide	( BRIDGE_2 );
+		driveBridgeLowSide	( BRIDGE_3 );
+		break;
+
 	default:
 		driveBridgeOff		( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_2 );
