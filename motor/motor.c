@@ -38,6 +38,14 @@ void	initializeMotor( void )
 
 
 /**************************************/
+unsigned char	driveMotor( double voltage )
+{
+}
+/**************************************/
+
+
+
+/**************************************/
 void _ISR	_CNInterrupt( void )
 {
 	unsigned char	now_phase, next_phase;
