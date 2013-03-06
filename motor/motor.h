@@ -8,7 +8,7 @@
 
 
 /****************************************/
-/*#define	_DEBUG*/
+//#define	_DEBUG
 /****************************************/
 
 /****************************************/
@@ -27,6 +27,7 @@ unsigned char	driveMotor( double voltage );
 /**************************************/
 /*テストコード*/
 /**************************************/
+void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsigned long period_ms );
 #ifdef	_DEBUG
 void	Test_driveMotor( void );
 void	Test_getFowardExcitationPhase( void );

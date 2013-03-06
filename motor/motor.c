@@ -11,6 +11,8 @@
 #include	"bridge/bridge.h"
 #include	"../assert/assert.h"
 
+#define	FCY	39613750
+#include	<libpic30.h>
 
 /**************************************/
 #define	SUPPLY_VOLTAGE_IS_UNDER_THE_GND	0xFFFF
@@ -46,7 +48,7 @@ void	initializeMotor( void )
 	/*Test_getFowardExcitationPhase();*/
 	/*Test_getBackwardExcitationPhase();*/
 	/*Test_getDicretion();*/
-	Test_getDuty();
+	/*Test_getDuty();*/
 	/*Test_driveMotor();*/
 #endif
 
@@ -105,17 +107,18 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 		next_phase	= getBackwardExcitationPhase( now_phase );
 		break;
 	case	BRAKE:
-		next_phase	= EXCITATION_PHASE_BRAKE;
+		next_phase	= EXCITATION_BRAKE;
 		break;
 	default:
-		next_phase	= EXCITATION_PHASE_BRAKE;
+		next_phase	= EXCITATION_BRAKE;
 		break;
 	}
 
 	driveBridge( next_phase, duty );
 
 #ifdef	_DEBUG
-	printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );
+	printf("H1: %d ,H2: %d ,H3: %d || Now_Phase:%d ,NextPhase: %d (Dir: %d) \n", HALL_1, HALL_2, HALL_3, now_phase, next_phase, G_direction_rotation );
+	/*printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );*/
 #endif
 }
 /**************************************/
@@ -144,25 +147,25 @@ static unsigned char	getFowardExcitationPhase( unsigned char hall_phase )
 {
 	switch( hall_phase ){
 	case	HALL_PHASE_1:
-		return	EXCITATION_PHASE_2;
+		return	EXCITATION_1_2;
 
 	case	HALL_PHASE_2:
-		return	EXCITATION_PHASE_3;
+		return	EXCITATION_1_3;
 
 	case	HALL_PHASE_3:
-		return	EXCITATION_PHASE_4;
+		return	EXCITATION_2_3;
 
 	case	HALL_PHASE_4:
-		return	EXCITATION_PHASE_5;
+		return	EXCITATION_2_1;
 
 	case	HALL_PHASE_5:
-		return	EXCITATION_PHASE_6;
+		return	EXCITATION_3_1;
 
 	case	HALL_PHASE_6:
-		return	EXCITATION_PHASE_1;
+		return	EXCITATION_3_2;
 
 	default:
-		return	EXCITATION_PHASE_BRAKE;
+		return	EXCITATION_BRAKE;
 	}
 }
 
@@ -171,25 +174,25 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 {
 	switch( hall_phase ){
 	case	HALL_PHASE_1:
-		return	EXCITATION_PHASE_6;
+		return	EXCITATION_2_1;
 
 	case	HALL_PHASE_2:
-		return	EXCITATION_PHASE_1;
+		return	EXCITATION_3_1;
 
 	case	HALL_PHASE_3:
-		return	EXCITATION_PHASE_2;
+		return	EXCITATION_3_2;
 
 	case	HALL_PHASE_4:
-		return	EXCITATION_PHASE_3;
+		return	EXCITATION_1_2;
 
 	case	HALL_PHASE_5:
-		return	EXCITATION_PHASE_4;
+		return	EXCITATION_1_3;
 
 	case	HALL_PHASE_6:
-		return	EXCITATION_PHASE_5;
+		return	EXCITATION_2_3;
 
 	default:
-		return	EXCITATION_PHASE_BRAKE;
+		return	EXCITATION_BRAKE;
 	}
 }
 /**************************************/
@@ -199,6 +202,32 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 /**************************************/
 /*テストコード*/
 /**************************************/
+void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsigned long period_ms )
+{
+	/*モータをサイン関数に法って動かす関数*/
+	const double	PI_2_ = 6.28, STEP_ = 0.0628;
+
+	unsigned char	i;
+	unsigned long	delay;
+	double	voltage;
+
+	/*周期が短すぎると危険なため，制限をかける(500ms)*/
+	if( period_ms < 500 ){
+		period_ms	= 500;
+	}
+	delay	= period_ms / 100;
+
+	for( i = 0; i < num_loop; i++ ){
+		double	rad;
+
+		for( rad = 0.0; rad < PI_2_; rad+= STEP_ ){
+			voltage	= max_voltage * sin( rad );
+			driveMotor( voltage );
+			__delay_ms( delay );
+		}
+	}
+}
+
 #ifdef	_DEBUG
 
 void	Test_driveMotor( void )
