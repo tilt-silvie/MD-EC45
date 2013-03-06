@@ -24,7 +24,7 @@ int main(void)
 
 	initializeMotor();
 
-	driveMotor( 11.0 );
+	driveMotor( -10.0 );
 
 	while( 1 );
 	

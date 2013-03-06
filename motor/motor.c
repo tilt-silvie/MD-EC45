@@ -172,22 +172,22 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 {
 	switch( hall_phase ){
 	case	HALL_PHASE_1:
-		return	EXCITATION_PHASE_6;
+		return	EXCITATION_PHASE_5;
 
 	case	HALL_PHASE_2:
-		return	EXCITATION_PHASE_1;
+		return	EXCITATION_PHASE_6;
 
 	case	HALL_PHASE_3:
-		return	EXCITATION_PHASE_2;
+		return	EXCITATION_PHASE_1;
 
 	case	HALL_PHASE_4:
-		return	EXCITATION_PHASE_3;
+		return	EXCITATION_PHASE_2;
 
 	case	HALL_PHASE_5:
-		return	EXCITATION_PHASE_4;
+		return	EXCITATION_PHASE_3;
 
 	case	HALL_PHASE_6:
-		return	EXCITATION_PHASE_5;
+		return	EXCITATION_PHASE_4;
 
 	default:
 		return	EXCITATION_PHASE_BRAKE;
