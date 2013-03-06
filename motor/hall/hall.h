@@ -18,23 +18,20 @@
 /**************************************/
 
 
+/**************************************/
+#define	HALL_PHASE_1	1
+#define	HALL_PHASE_2	2
+#define	HALL_PHASE_3	3
+#define	HALL_PHASE_4	4
+#define	HALL_PHASE_5	5
+#define	HALL_PHASE_6	6
+/**************************************/
 
-/**************************************/
-#define	PHASE_1	0
-#define	PHASE_2	1
-#define	PHASE_3	2
-#define	PHASE_4	3
-#define	PHASE_5	4
-#define	PHASE_6	5
-/**************************************/
 
 /**************************************/
 void	initializeHall( void );
 
 unsigned char	getPhaseHall( unsigned char hall_1, unsigned char hall_2, unsigned char hall_3 );
-
-unsigned char	getFowardPhaseHall( unsigned char phase );
-unsigned char	getBackwardPhaseHall( unsigned char phase );
 
 /**************************************/
 
@@ -44,8 +41,8 @@ unsigned char	getBackwardPhaseHall( unsigned char phase );
 #ifdef	DO_TEST
 
 void	Test_getPhase( void );
-void	Test_getFowardPhase( void );
-void	Test_getBackwardPhase( void );
+/*void	Test_getFowardPhase( void );*/
+/*void	Test_getBackwardPhase( void );*/
 
 #endif
 /**************************************/

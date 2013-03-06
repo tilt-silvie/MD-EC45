@@ -47,40 +47,46 @@ static void	initializePWM( void )
 unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 {
 	switch( phase ){
-	case	0:
+	case	EXCITATION_PHASE_1:
 		driveBridgeHighSide	( BRIDGE_3 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeOff		( BRIDGE_1 );
 		break;
 			
-	case	1:
+	case	EXCITATION_PHASE_2:
 		driveBridgeHighSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeOff		( BRIDGE_3 );
 		break;
 			
-	case	2:
+	case	EXCITATION_PHASE_3:
 		driveBridgeHighSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_3 );
 		driveBridgeOff		( BRIDGE_2 );
 		break;
 			
-	case	3:
+	case	EXCITATION_PHASE_4:
 		driveBridgeHighSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_3 );
 		driveBridgeOff		( BRIDGE_1 );
 		break;
 			
-	case	4:
+	case	EXCITATION_PHASE_5:
 		driveBridgeHighSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_3 );
 		break;
 			
-	case	5:
+	case	EXCITATION_PHASE_6:
 		driveBridgeHighSide	( BRIDGE_3 );
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_2 );
+		break;
+
+	case	EXCITATION_PHASE_BRAKE:
+		driveBridgeLowSide	( BRIDGE_1 );
+		driveBridgeLowSide	( BRIDGE_2 );
+		driveBridgeLowSide	( BRIDGE_3 );
 		break;
 
 	default:
@@ -269,9 +275,14 @@ void	Test_driveBridge( void )
 	unsigned char	phase;
 	unsigned long	i;
 
-	for( phase = 0; phase < 6; phase ++ ){
+	for( i = 0; i < 1000000; i++ );
+	printf("**Test_driveBridge**\n\n");
+	for( i = 0; i < 5000000; i++ );
+
+	for( phase = 1; phase <= 6; phase ++ ){
 		driveBridge( phase, 50 );
-		for( i = 0; i < 5000000; i++ );
+		printf("phase = %d\n", phase );
+		for( i = 0; i < 10000000; i++ );
 	}
 }
 

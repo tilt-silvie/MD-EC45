@@ -34,22 +34,22 @@ unsigned char	getPhaseHall( unsigned char hall_1, unsigned char hall_2, unsigned
 
 	switch( phase_conbined ){
 	case	0b001:
-		return	PHASE_1;
+		return	HALL_PHASE_1;
 
 	case	0b101:
-		return	PHASE_2;
+		return	HALL_PHASE_2;
 
 	case	0b100:
-		return	PHASE_3;
+		return	HALL_PHASE_3;
 
 	case	0b110:
-		return	PHASE_4;
+		return	HALL_PHASE_4;
 
 	case	0b010:
-		return	PHASE_5;
+		return	HALL_PHASE_5;
 
 	case	0b011:
-		return	PHASE_6;
+		return	HALL_PHASE_6;
 
 	default:
 		return	0xFF;
@@ -57,70 +57,8 @@ unsigned char	getPhaseHall( unsigned char hall_1, unsigned char hall_2, unsigned
 }
 
 
-unsigned char	getFowardPhaseHall( unsigned char phase )
-{
-	switch( phase ){
-	case	PHASE_1:
-		return	PHASE_2;
-
-	case	PHASE_2:
-		return	PHASE_3;
-
-	case	PHASE_3:
-		return	PHASE_4;
-
-	case	PHASE_4:
-		return	PHASE_5;
-
-	case	PHASE_5:
-		return	PHASE_6;
-
-	case	PHASE_6:
-		return	PHASE_1;
-
-	default:
-		return	0xFF;
-	}
-}
-
-
-unsigned char	getBackwardPhaseHall( unsigned char phase )
-{
-	switch( phase ){
-	case	PHASE_1:
-		return	PHASE_6;
-
-	case	PHASE_2:
-		return	PHASE_5;
-
-	case	PHASE_3:
-		return	PHASE_4;
-
-	case	PHASE_4:
-		return	PHASE_3;
-
-	case	PHASE_5:
-		return	PHASE_2;
-
-	case	PHASE_6:
-		return	PHASE_1;
-
-	default:
-		return	0xFF;
-	}
-}
 /**************************************/
 
-
-/**************************************/
-void _ISR	_CNInterrupt( void )
-{
-	_CNIF	= 0;
-
-	unsigned char	phase;
-	phase = getPhase( HALL_1, HALL_2, HALL_3 );
-}
-/**************************************/
 
 
 /**************************************/
