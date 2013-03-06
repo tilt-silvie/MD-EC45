@@ -33,7 +33,7 @@ void	initializeMotor( void )
 	G_direction_rotation	= CCW;
 
 	Test_getFowardExcitationPhase();
-	while( 1 ); 
+	Test_getBackwardExcitationPhase();
 
 }
 /**************************************/
@@ -157,37 +157,42 @@ void	Test_getFowardExcitationPhase( void )
 
 	for( i = 0; i < 1000000; i++ );
 	printf("\n\n**Test_getFowardExcitationPhase**\n");
+	printf("\n--Test start!--\n");
 
 	/* **** */
 	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_2 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_2 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_3 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_PHASE_4 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_PHASE_5 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_6 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_1 )
+	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
 	/* **** */
 
+	printf("\n-- Test Passed! --\n");
 }
 
 
 void	Test_getBackwardExcitationPhase( void )
 {
 	unsigned long	i;
-	unsigned char	is_test_succeed = 0;
 
 	for( i = 0; i < 1000000; i++ );
 	printf("\n\n**Test_getBackwardExcitationPhase**\n");
+	printf("\n--Test start!--\n");
 
 	/* **** */
-	is_test_succeed	= ( getBackwardExcitationPhase(HALL_PHASE_1) == EXCITATION_PHASE_6 ) ?1:0;
-	is_test_succeed	= ( getBackwardExcitationPhase(HALL_PHASE_2) == EXCITATION_PHASE_1 ) ?1:0;
-	is_test_succeed	= ( getBackwardExcitationPhase(HALL_PHASE_3) == EXCITATION_PHASE_2 ) ?1:0;
-	is_test_succeed	= ( getBackwardExcitationPhase(HALL_PHASE_4) == EXCITATION_PHASE_3 ) ?1:0;
-	is_test_succeed	= ( getBackwardExcitationPhase(HALL_PHASE_5) == EXCITATION_PHASE_4 ) ?1:0;
-	is_test_succeed	= ( getBackwardExcitationPhase(HALL_PHASE_6) == EXCITATION_PHASE_5 ) ?1:0;
-	is_test_succeed	= ( getBackwardExcitationPhase(255) == EXCITATION_PHASE_BRAKE ) ?1:0;
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_6 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_1 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_PHASE_2 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_PHASE_3 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_4 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_5 )
+	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
 	/* **** */
 
-	if( is_test_succeed ){
-		printf( "Test Succeeded!\n");
-	}else{
-		printf( "Test Faild\n");
-	}
+	printf("\n-- Test Passed! --\n");
 }
+
+
 #endif
