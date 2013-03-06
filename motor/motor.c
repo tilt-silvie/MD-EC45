@@ -44,7 +44,7 @@ void	initializeMotor( void )
 	/*Test_getFowardExcitationPhase();*/
 	/*Test_getBackwardExcitationPhase();*/
 	/*Test_getDicretion();*/
-	/*Test_getDuty();*/
+	Test_getDuty();
 	/*Test_driveMotor();*/
 #endif
 
@@ -77,7 +77,7 @@ static unsigned long	getDuty( double target_voltage, double supply_voltage )
 {
 	target_voltage	= fabs( target_voltage );
 
-	if( supply_voltage < 0 ){
+	if( supply_voltage <= 0 ){
 		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
 	}
 
