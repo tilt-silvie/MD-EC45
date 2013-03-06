@@ -41,10 +41,10 @@ void	initializeMotor( void )
 	G_direction_rotation	= CCW;
 
 #ifdef	_DEBUG
-	Test_getFowardExcitationPhase();
-	Test_getBackwardExcitationPhase();
-	Test_getDicretion();
-	Test_getDuty();
+	/*Test_getFowardExcitationPhase();*/
+	/*Test_getBackwardExcitationPhase();*/
+	/*Test_getDicretion();*/
+	/*Test_getDuty();*/
 #endif
 
 }
@@ -54,13 +54,17 @@ void	initializeMotor( void )
 /**************************************/
 unsigned char	driveMotor( double voltage )
 {
-	
-	/*
-	 *G_direction_rotation	= getDirection( voltage );
-	 *G_duty	= getDuty( voltage, supply_voltage );
-	 *exciteWinding( G_direction_rotation, G_duty );
-	 */
+	/*TODO : supply_voltage はAD変換で随時取得するように*/
+
+	double	supply_voltage = 12.0;
+
+	G_direction_rotation	= getDirection( voltage );
+	G_duty	= getDuty( voltage, supply_voltage );
+	exciteWinding( G_direction_rotation, G_duty );
+
+	return	0;
 }
+
 
 static unsigned char	getDirection( double voltage )
 {
