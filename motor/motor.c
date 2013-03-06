@@ -31,7 +31,7 @@ void	initializeMotor( void )
 {
 	initializeHall();
 	initializeBridge();
-	G_direction_rotation	= BRAKE;
+	G_direction_rotation	= CCW;
 
 }
 /**************************************/
@@ -40,26 +40,31 @@ void	initializeMotor( void )
 /**************************************/
 void _ISR	_CNInterrupt( void )
 {
+	unsigned char	now_phase, next_phase;
+
 	_CNIF	= 0;
 
-	if( G_direction_rotation == BRAKE ){
-		driveBridge( EXCITATION_PHASE_BRAKE, 0 );
+	now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
 
-	}else{
-		unsigned char	now_phase, next_phase;
-
-		now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
-
-		if( G_direction_rotation == CW ){
-			next_phase	= getFowardExcitationPhase( now_phase );
-		}else{
-			next_phase	= getBackwardExcitationPhase( now_phase );
-		}
-		driveBridge( next_phase, G_duty );
+	switch( G_direction_rotation ){
+	case	CW:
+		next_phase	= getFowardExcitationPhase( now_phase );
+		break;
+	case	CCW:
+		next_phase	= getBackwardExcitationPhase( now_phase );
+		break;
+	case	BRAKE:
+		next_phase	= EXCITATION_PHASE_BRAKE;
+		break;
+	default:
+		next_phase	= EXCITATION_PHASE_BRAKE;
+		break;
 	}
 
+	driveBridge( next_phase, G_duty );
+
 #ifdef	DO_TEST
-	printf("now phase = %d : next phase = %d\n", now_phase, next_phase );
+	printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );
 #endif
 }
 
@@ -98,19 +103,19 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 		return	EXCITATION_PHASE_6;
 
 	case	HALL_PHASE_2:
-		return	EXCITATION_PHASE_5;
+		return	EXCITATION_PHASE_1;
 
 	case	HALL_PHASE_3:
-		return	EXCITATION_PHASE_4;
+		return	EXCITATION_PHASE_2;
 
 	case	HALL_PHASE_4:
 		return	EXCITATION_PHASE_3;
 
 	case	HALL_PHASE_5:
-		return	EXCITATION_PHASE_2;
+		return	EXCITATION_PHASE_4;
 
 	case	HALL_PHASE_6:
-		return	EXCITATION_PHASE_1;
+		return	EXCITATION_PHASE_5;
 
 	default:
 		return	EXCITATION_PHASE_BRAKE;
