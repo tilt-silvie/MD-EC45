@@ -45,7 +45,7 @@ void	initializeMotor( void )
 	/*Test_getBackwardExcitationPhase();*/
 	/*Test_getDicretion();*/
 	/*Test_getDuty();*/
-	Test_driveMotor();
+	/*Test_driveMotor();*/
 #endif
 
 }
@@ -123,8 +123,18 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 /**************************************/
 void _ISR	_CNInterrupt( void )
 {
+	/*
+	 *NOTE : DEBUG出力なし時の動作時間計測結果
+	 *2013/03/06 21:32 16[us]程度
+	 */
+
 	_CNIF	= 0;
+
+	LED_1	= 1; /*動作時間計測用*/ 
+
 	exciteWinding( G_direction_rotation, G_duty );
+
+	LED_1	= 0; /*動作時間計測用*/ 
 }
 
 
