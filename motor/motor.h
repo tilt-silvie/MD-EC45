@@ -6,10 +6,10 @@
 #ifndef	_MOTOR_H_
 #define	_MOTOR_H_
 
-/****************************************/
-#define	DO_TEST
-/****************************************/
 
+/****************************************/
+#define	_DEBUG
+/****************************************/
 
 /****************************************/
 #define	CW		0
@@ -27,7 +27,7 @@ unsigned char	driveMotor( double voltage );
 /**************************************/
 /*テストコード*/
 /**************************************/
-#ifdef	DO_TEST
+#ifdef	_DEBUG
 void	Test_getFowardExcitationPhase( void );
 void	Test_getBackwardExcitationPhase( void );
 #endif

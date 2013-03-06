@@ -8,10 +8,8 @@
 #include	"../pin_assign.h"
 #include	"hall/hall.h"
 #include	"bridge/bridge.h"
+#include	"../assert/assert.h"
 
-#ifdef	DO_TEST
-#include	<stdio.h>
-#endif
 
 /**************************************/
 /*グローバル変数*/
@@ -73,7 +71,7 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 
 	driveBridge( next_phase, duty );
 
-#ifdef	DO_TEST
+#ifdef	_DEBUG
 	printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );
 #endif
 }
@@ -148,7 +146,7 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 /**************************************/
 /*テストコード*/
 /**************************************/
-#ifdef	DO_TEST
+#ifdef	_DEBUG
 
 void	Test_getFowardExcitationPhase( void )
 {
