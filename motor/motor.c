@@ -21,6 +21,7 @@ static unsigned long	G_duty = 50;
 
 
 /**************************************/
+static void	exciteWinding( unsigned char direction_rotation, unsigned long duty );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
 static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
@@ -40,21 +41,22 @@ void	initializeMotor( void )
 /**************************************/
 unsigned char	driveMotor( double voltage )
 {
+	
+	/*
+	 *G_direction_rotation	= getDirection( voltage );
+	 *G_duty	= getDuty( voltage, supply_voltage );
+	 *exciteWinding( G_direction_rotation, G_duty );
+	 */
 }
-/**************************************/
 
 
-
-/**************************************/
-void _ISR	_CNInterrupt( void )
+static void	exciteWinding( unsigned char direction_rotation, unsigned long duty )
 {
 	unsigned char	now_phase, next_phase;
 
-	_CNIF	= 0;
-
 	now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
 
-	switch( G_direction_rotation ){
+	switch( direction_rotation ){
 	case	CW:
 		next_phase	= getFowardExcitationPhase( now_phase );
 		break;
@@ -69,11 +71,21 @@ void _ISR	_CNInterrupt( void )
 		break;
 	}
 
-	driveBridge( next_phase, G_duty );
+	driveBridge( next_phase, duty );
 
 #ifdef	DO_TEST
 	printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );
 #endif
+}
+/**************************************/
+
+
+
+/**************************************/
+void _ISR	_CNInterrupt( void )
+{
+	_CNIF	= 0;
+	exciteWinding( G_direction_rotation, G_duty );
 }
 
 
