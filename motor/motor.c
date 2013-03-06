@@ -14,12 +14,22 @@
 #endif
 
 /**************************************/
+/*グローバル変数*/
+static unsigned char	G_direction_rotation = BRAKE;
+/**************************************/
+
+
+/**************************************/
+static unsigned char	getNexPhase( unsigned char now_phase, unsigned char direction_rotation );
+/**************************************/
+
+
+/**************************************/
 void	initializeMotor( void )
 {
 	initializeHall();
 	initializeBridge();
-	Test_driveBridge();
-	while(1);
+	G_direction_rotation	= BRAKE;
 }
 /**************************************/
 
@@ -32,13 +42,27 @@ void _ISR	_CNInterrupt( void )
 	unsigned char	now_phase, next_phase;
 
 	now_phase = getPhaseHall( HALL_1, HALL_2, HALL_3 );
-	next_phase	= getFowardPhaseHall( now_phase );
 
 	driveBridge( next_phase, 20 );
 
 #ifdef	DO_TEST
 	printf("now phase = %d : next phase = %d\n", now_phase, next_phase );
 #endif
+}
+
+
+static unsigned char	getNexPhase( unsigned char now_phase, unsigned char direction_rotation )
+{
+	switch( direction_rotation ){
+	case	CW:
+		return	getFowardPhaseHall( now_phase );
+	case	CCW:
+		return	getBackwardPhaseHall( now_phase );
+	case	BRAKE:
+		return	PHASE_BRAKE;
+	default:
+		return	PHASE_BRAKE;
+	}
 }
 /**************************************/
 

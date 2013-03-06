@@ -8,7 +8,17 @@
 
 
 /**************************************/
-#define	DO_TEST
+/*#define	DO_TEST*/
+/**************************************/
+
+
+/**************************************/
+#define	EXCITATION_PHASE_1	1
+#define	EXCITATION_PHASE_2	2
+#define	EXCITATION_PHASE_3	3
+#define	EXCITATION_PHASE_4	4
+#define	EXCITATION_PHASE_5	5
+#define	EXCITATION_PHASE_6	6
 /**************************************/
 
 

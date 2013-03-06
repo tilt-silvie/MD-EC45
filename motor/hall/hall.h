@@ -19,12 +19,12 @@
 
 
 /**************************************/
-#define	PHASE_1	1
-#define	PHASE_2	2
-#define	PHASE_3	3
-#define	PHASE_4	4
-#define	PHASE_5	5
-#define	PHASE_6	6
+#define	HALL_PHASE_1	1
+#define	HALL_PHASE_2	2
+#define	HALL_PHASE_3	3
+#define	HALL_PHASE_4	4
+#define	HALL_PHASE_5	5
+#define	HALL_PHASE_6	6
 /**************************************/
 
 
