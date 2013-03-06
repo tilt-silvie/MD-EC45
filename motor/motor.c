@@ -228,6 +228,29 @@ void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsign
 	}
 }
 
+
+void	Test_driveMotor_bangbang( double voltage, unsigned char num_loop, unsigned long period_ms )
+{
+	/*モータのCW/CCWを切り替える実験*/
+
+	unsigned char	i;
+	unsigned long	delay;
+
+	/*周期が短すぎると危険なため，制限をかける(500ms)*/
+	if( period_ms < 500 ){
+		period_ms	= 500;
+	}
+	delay	= period_ms / 2;
+
+	for( i = 0; i < num_loop; i++ ){
+		driveMotor( voltage );
+		__delay_ms( delay );
+		driveMotor( -voltage );
+		__delay_ms( delay );
+	}
+
+	driveMotor( 0.0 );
+}
 #ifdef	_DEBUG
 
 void	Test_driveMotor( void )

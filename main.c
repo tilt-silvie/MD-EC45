@@ -19,14 +19,9 @@
 int main(void) 
 {
 	initialize( );
-
 	initializeUart( 9, 8, FCY*2, 57600);
-
 	initializeMotor();
-
 	while( 1 );
-	
-
 	return	0;
 }
 
