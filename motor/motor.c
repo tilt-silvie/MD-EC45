@@ -4,12 +4,17 @@
 /****************************************/
 
 #include	<xc.h>
-#include	<stdlib.h>
+#include	<math.h>
 #include	"motor.h"
 #include	"../pin_assign.h"
 #include	"hall/hall.h"
 #include	"bridge/bridge.h"
 #include	"../assert/assert.h"
+
+
+/**************************************/
+#define	TARGET_VOLTAGE_TOO_HIGH	0xFFFF
+/**************************************/
 
 
 /**************************************/
@@ -22,6 +27,7 @@ static unsigned long	G_duty = 50;
 /**************************************/
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty );
 static unsigned char	getDirection( double voltage );
+static unsigned long	getDuty( double target_voltage, double supply_voltage );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
 static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
@@ -38,6 +44,7 @@ void	initializeMotor( void )
 	Test_getFowardExcitationPhase();
 	Test_getBackwardExcitationPhase();
 	Test_getDicretion();
+	Test_getDuty();
 #endif
 
 }
@@ -59,6 +66,23 @@ static unsigned char	getDirection( double voltage )
 {
 	return	(voltage < 0) ? CCW : CW;
 }
+
+
+static unsigned long	getDuty( double target_voltage, double supply_voltage )
+{
+	target_voltage	= fabs( target_voltage );
+
+	if( supply_voltage < 0 ){
+		return	TARGET_VOLTAGE_TOO_HIGH;
+	}
+
+	if( target_voltage > supply_voltage ){
+		return	TARGET_VOLTAGE_TOO_HIGH;
+	}
+	
+	return	target_voltage / supply_voltage * 100;
+}
+
 
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty )
 {
@@ -166,7 +190,7 @@ void	Test_getFowardExcitationPhase( void )
 
 	for( i = 0; i < 1000000; i++ );
 	printf("\n\n**Test_getFowardExcitationPhase**\n");
-	printf("\n--Test start!--\n");
+	printf("--Test start!--\n");
 
 	/* **** */
 	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_2 )
@@ -178,7 +202,7 @@ void	Test_getFowardExcitationPhase( void )
 	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
 	/* **** */
 
-	printf("\n-- Test Passed! --\n");
+	printf("-- Test Passed! --\n");
 }
 
 
@@ -188,7 +212,7 @@ void	Test_getBackwardExcitationPhase( void )
 
 	for( i = 0; i < 1000000; i++ );
 	printf("\n\n**Test_getBackwardExcitationPhase**\n");
-	printf("\n--Test start!--\n");
+	printf("--Test start!--\n");
 
 	/* **** */
 	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_6 )
@@ -200,7 +224,7 @@ void	Test_getBackwardExcitationPhase( void )
 	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
 	/* **** */
 
-	printf("\n-- Test Passed! --\n");
+	printf("-- Test Passed! --\n");
 }
 
 
@@ -210,18 +234,38 @@ void	Test_getDicretion( void )
 
 	for( i = 0; i < 1000000; i++ );
 	printf("\n\n**Test_getDicretion**\n");
-	printf("\n--Test start!--\n");
+	printf("--Test start!--\n");
 
 	/* **** */
 	ASSERT( getDirection( 12.0 ) == CW )
 	ASSERT( getDirection( -12.0 ) == CCW )
 	ASSERT( getDirection( 10 ) == CW )
+	ASSERT( getDirection( -10 ) == CCW )
 	ASSERT( getDirection( 0.0 ) == CW )
 	ASSERT( getDirection( 0 ) == CW )
 	/* **** */
 
-	printf("\n-- Test Passed! --\n");
+	printf("-- Test Passed! --\n");
 }
 
+
+void	Test_getDuty( void )
+{
+	unsigned long	i;
+
+	for( i = 0; i < 1000000; i++ );
+	printf("\n\n**Test_getDuty**\n");
+	printf("--Test start!--\n");
+
+	/* **** */
+	ASSERT( getDuty( 10, 10 ) == 100 )
+	ASSERT( getDuty( -10, 10 ) == 100 )
+	ASSERT( getDuty( 0, 10 ) == 0 )
+	ASSERT( getDuty( 10, 5 ) == TARGET_VOLTAGE_TOO_HIGH )
+	ASSERT( getDuty( 10, 0 ) == TARGET_VOLTAGE_TOO_HIGH )
+	/* **** */
+
+	printf("-- Test Passed! --\n");
+}
 
 #endif
