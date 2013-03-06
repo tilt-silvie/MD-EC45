@@ -8,6 +8,7 @@
 #include	<outcompare.h>
 #include	"peripheral_pin.h"
 #include	"bridge.h"
+#include	"../hall/hall.h"
 #include	"../../pin_assign.h"
 
 #ifdef	DO_TEST
@@ -47,37 +48,37 @@ static void	initializePWM( void )
 unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 {
 	switch( phase ){
-	case	0:
+	case	PHASE_1:
 		driveBridgeHighSide	( BRIDGE_3 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeOff		( BRIDGE_1 );
 		break;
 			
-	case	1:
+	case	PHASE_2:
 		driveBridgeHighSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_2 );
 		driveBridgeOff		( BRIDGE_3 );
 		break;
 			
-	case	2:
+	case	PHASE_3:
 		driveBridgeHighSide	( BRIDGE_1 );
 		driveBridgeLowSide	( BRIDGE_3 );
 		driveBridgeOff		( BRIDGE_2 );
 		break;
 			
-	case	3:
+	case	PHASE_4:
 		driveBridgeHighSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_3 );
 		driveBridgeOff		( BRIDGE_1 );
 		break;
 			
-	case	4:
+	case	PHASE_5:
 		driveBridgeHighSide	( BRIDGE_2 );
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_3 );
 		break;
 			
-	case	5:
+	case	PHASE_6:
 		driveBridgeHighSide	( BRIDGE_3 );
 		driveBridgeLowSide	( BRIDGE_1 );
 		driveBridgeOff		( BRIDGE_2 );

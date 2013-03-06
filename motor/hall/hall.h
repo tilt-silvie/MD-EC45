@@ -18,15 +18,15 @@
 /**************************************/
 
 
+/**************************************/
+#define	PHASE_1	1
+#define	PHASE_2	2
+#define	PHASE_3	3
+#define	PHASE_4	4
+#define	PHASE_5	5
+#define	PHASE_6	6
+/**************************************/
 
-/**************************************/
-#define	PHASE_1	0
-#define	PHASE_2	1
-#define	PHASE_3	2
-#define	PHASE_4	3
-#define	PHASE_5	4
-#define	PHASE_6	5
-/**************************************/
 
 /**************************************/
 void	initializeHall( void );
