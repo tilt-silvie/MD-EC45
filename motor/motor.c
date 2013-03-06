@@ -32,6 +32,9 @@ void	initializeMotor( void )
 	initializeBridge();
 	G_direction_rotation	= CCW;
 
+	Test_getFowardExcitationPhase();
+	while( 1 ); 
+
 }
 /**************************************/
 
@@ -151,26 +154,15 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 void	Test_getFowardExcitationPhase( void )
 {
 	unsigned long	i;
-	unsigned char	is_test_succeed = 0;
 
 	for( i = 0; i < 1000000; i++ );
 	printf("\n\n**Test_getFowardExcitationPhase**\n");
 
 	/* **** */
-	is_test_succeed	= ( getFowardExcitationPhase(HALL_PHASE_1) == EXCITATION_PHASE_2 ) ?1:0;
-	is_test_succeed	= ( getFowardExcitationPhase(HALL_PHASE_2) == EXCITATION_PHASE_3 ) ?1:0;
-	is_test_succeed	= ( getFowardExcitationPhase(HALL_PHASE_3) == EXCITATION_PHASE_4 ) ?1:0;
-	is_test_succeed	= ( getFowardExcitationPhase(HALL_PHASE_4) == EXCITATION_PHASE_5 ) ?1:0;
-	is_test_succeed	= ( getFowardExcitationPhase(HALL_PHASE_5) == EXCITATION_PHASE_6 ) ?1:0;
-	is_test_succeed	= ( getFowardExcitationPhase(HALL_PHASE_6) == EXCITATION_PHASE_1 ) ?1:0;
-	is_test_succeed	= ( getFowardExcitationPhase(0) == EXCITATION_PHASE_BRAKE ) ?1:0;
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_2 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_2 )
 	/* **** */
 
-	if( is_test_succeed ){
-		printf( "Test Succeeded!\n");
-	}else{
-		printf( "Test Faild\n");
-	}
 }
 
 
