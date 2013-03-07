@@ -29,6 +29,27 @@ void	initializeComm( void )
 {
 	initializeUart( 9, 8, FCY*2, 57600);
 }
+/**************************************/
+
+
+/**************************************/
+Order	fetchOrder( void )
+{
+	unsigned char	num_of_data = 5;
+	unsigned char	buffer[0]={0}, i;
+	Order	order;
+	
+	while( receivePacket(buffer) == 0 );
+
+	order.command	= buffer[0];
+	for( i = 0; i < num_of_data; i++ ){
+		order.data[i]	= buffer[i+1];
+	}
+
+	return	order;
+}
+/**************************************/
+
 
 
 /**************************************/
