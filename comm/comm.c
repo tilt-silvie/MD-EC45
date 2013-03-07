@@ -10,7 +10,21 @@
 #define	FCY	39613750
 #include	<libpic30.h>
 
+/**************************************/
+/*Packet_robo ライブラリ使用のため*/
+#include	"packet_robo/packet_robo.h"
 
+extern void	send1byte( unsigned char data )
+{
+	putcUart( data );
+}
+
+extern unsigned char	get1byte( unsigned char* data )
+{
+	return	( getcUart(data) == 0 ) ? BUF_NOT_EMPTY : BUF_EMPTY;
+}
+
+/**************************************/
 void	initializeComm( void )
 {
 	initializeUart( 9, 8, FCY*2, 57600);
