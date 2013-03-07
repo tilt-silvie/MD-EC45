@@ -4,3 +4,6 @@
 [submodule "assert"]
 	path = assert
 	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/assert/
+[submodule "comm/packet_robo"]
+	path = comm/packet_robo
+	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/packet_robo/
