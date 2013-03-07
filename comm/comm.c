@@ -29,11 +29,9 @@ void	initializeComm( void )
 {
 	initializeUart( 9, 8, FCY*2, 57600);
 
-        while(1){
-            Order   order;
-            order   = fetchOrder( );
-            __delay_ms(1000);
-        }
+#ifdef	_DEBUG
+	Test_fetchOrder();
+#endif
 }
 /**************************************/
 
@@ -63,15 +61,34 @@ Order	fetchOrder( void )
 /**************************************/
 #ifdef	_DEBUG
 
-void	Test_driveMotor( void )
+void	Test_fetchOrder( void )
 {
-	unsigned long	i;
+	__delay_ms(100);
 
-	for( i = 0; i < 1000000; i++ );
-	printf("\n\n**Test_driveMotor**\n");
+	printf("\n\n**Test_fetchOrder**\n");
 	printf("--Test start!--\n");
 
 	/* **** */
+
+	Order	order;
+	while( 1 ) {
+		order	= fetchOrder();
+
+		switch( order.command ){
+		case	COMMAND_TEST_SINWAVE:
+			printf("Rcvd:TEST_SINWAVE\n");
+			break;
+		case	COMMAND_TEST_BANGBANG:
+			printf("Rcvd:TEST_BANGBANG\n");
+			break;
+
+		default:
+			break;
+		}
+
+		__delay_ms( 500 );
+	}
+
 	/* **** */
 
 	printf("-- Test Passed! --\n");
