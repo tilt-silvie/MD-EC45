@@ -28,6 +28,12 @@ extern unsigned char	get1byte( unsigned char* data )
 void	initializeComm( void )
 {
 	initializeUart( 9, 8, FCY*2, 57600);
+
+        while(1){
+            Order   order;
+            order   = fetchOrder( );
+            __delay_ms(1000);
+        }
 }
 /**************************************/
 
