@@ -4,11 +4,17 @@
 /****************************************/
 
 #include	"comm.h"
+#include	"uart/uart_dsPIC33F.h"
 #include	"../assert/assert.h"
 
 #define	FCY	39613750
 #include	<libpic30.h>
 
+
+void	initializeComm( void )
+{
+	initializeUart( 9, 8, FCY*2, 57600);
+}
 
 
 /**************************************/
