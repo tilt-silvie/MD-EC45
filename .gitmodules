@@ -1,6 +1,9 @@
-[submodule "uart_dsPIC33F"]
-	path = uart_dsPIC33F
-	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/uart_dsPIC33F/
 [submodule "assert"]
 	path = assert
 	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/assert/
+[submodule "comm/packet_robo"]
+	path = comm/packet_robo
+	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/packet_robo/
+[submodule "comm/uart"]
+	path = comm/uart
+	url = /home/master/Dropbox/Robo_Share/Robocup/2013/02_Program/lib/uart_dsPIC33F/

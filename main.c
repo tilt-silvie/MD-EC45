@@ -9,18 +9,19 @@
 
 #include	<xc.h>
 #include	<libpic30.h>
-#include	"uart_dsPIC33F/uart_dsPIC33F.h"
 #include	"main.h"
 #include	"pin_assign.h"
 #include	"motor/motor.h"
+#include	"comm/comm.h"
 
 /********************************************************/
 
 int main(void) 
 {
 	initialize( );
-	initializeUart( 9, 8, FCY*2, 57600);
+	initializeComm();
 	initializeMotor();
+
 	while( 1 );
 	return	0;
 }
