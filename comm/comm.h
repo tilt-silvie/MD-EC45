@@ -19,6 +19,7 @@
 /****************************************/
 #define	MAX_NUM_OF_DATA	10
 
+#define	COMMAND_NULL			0x00
 #define	COMMAND_TEST_SINWAVE	0x01
 #define	COMMAND_TEST_BANGBANG	0x02
 

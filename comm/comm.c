@@ -40,14 +40,19 @@ void	initializeComm( void )
 Order	fetchOrder( void )
 {
 	unsigned char	num_of_data = 5;
-	unsigned char	buffer[0]={0}, i;
+	unsigned char	buffer[0], i, data_update = 0;
 	Order	order;
 	
-	while( receivePacket(buffer) == 0 );
+	order.command	= COMMAND_NULL;
 
-	order.command	= buffer[0];
-	for( i = 0; i < num_of_data; i++ ){
-		order.data[i]	= buffer[i+1];
+	if( receivePacket(buffer) == DATA_IS_UPDATED ){
+		order.command	= buffer[0];
+
+		for( i = 0; i < num_of_data; i++ ){
+			order.data[i]	= buffer[i+1];
+		}
+	}else{
+		order.command	= COMMAND_NULL;
 	}
 
 	return	order;
