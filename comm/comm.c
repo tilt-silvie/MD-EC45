@@ -40,7 +40,9 @@ void	initializeComm( void )
 Order	fetchOrder( void )
 {
 	unsigned char	num_of_data = 5;
-	unsigned char	buffer[0], i, data_update = 0;
+	unsigned char	i, data_update = 0;
+	char	buffer[MAX_NUM_OF_DATA];
+
 	Order	order;
 	
 	order.command	= COMMAND_NULL;

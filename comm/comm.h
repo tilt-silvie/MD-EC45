@@ -25,7 +25,7 @@
 
 typedef struct	Order{
 	unsigned char	command;
-	unsigned char 	data[MAX_NUM_OF_DATA];
+	char 	data[MAX_NUM_OF_DATA];
 }Order;
 /****************************************/
 
