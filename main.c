@@ -42,6 +42,9 @@ int main(void)
 			driveMotorSinWave(order);
 			break;
 
+		case	COMMAND_TEST_BANGBANG:
+			driveMotorBangbang(order);
+
 		default:
 			break;
 		}
