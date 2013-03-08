@@ -20,6 +20,7 @@
 
 
 /********************************************************/
+static void	executeOrder( Order order );
 static void	driveMotorSinWave( Order order );
 static void	driveMotorBangbang( Order order );
 /********************************************************/
@@ -32,26 +33,9 @@ int main(void)
 
 	Order	order;
 	while( 1 ){
-		unsigned char*	p_data;
-		unsigned char	temp;
-
 		order	= fetchOrder();
-
-		switch( order.command ){
-		case	COMMAND_TEST_SINWAVE:
-			driveMotorSinWave(order);
-			break;
-
-		case	COMMAND_TEST_BANGBANG:
-			driveMotorBangbang(order);
-
-		default:
-			break;
-		}
-
-		__delay_ms(100);
+		executeOrder( order );
 	}
-	return	0;
 }
 
 
@@ -59,6 +43,21 @@ int main(void)
 /********************************************************/
 
 
+/********************************************************/
+static void	executeOrder( Order order )
+{
+	switch( order.command ){
+	case	COMMAND_TEST_SINWAVE:
+		driveMotorSinWave(order);
+		break;
+
+	case	COMMAND_TEST_BANGBANG:
+		driveMotorBangbang(order);
+
+	default:
+		break;
+	}
+}
 /********************************************************/
 static void	driveMotorSinWave( Order order )
 {
