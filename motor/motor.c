@@ -28,8 +28,8 @@ static unsigned long	G_duty = 50;
 
 /**************************************/
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty );
-static unsigned char	getDirection( double voltage );
-static unsigned long	getDuty( double target_voltage, double supply_voltage );
+static unsigned char	getDirection( signed int voltage );
+static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
 static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
@@ -57,29 +57,29 @@ void	initializeMotor( void )
 
 
 /**************************************/
-unsigned char	driveMotor( double voltage )
+unsigned char	driveMotor( signed int motor_millivolt )
 {
 	/*TODO : supply_voltage はAD変換で随時取得するように*/
 
-	double	supply_voltage = 12.0;
+	signed int	supply_voltage = 12000;
 
-	G_direction_rotation	= getDirection( voltage );
-	G_duty	= getDuty( voltage, supply_voltage );
+	G_direction_rotation	= getDirection( motor_millivolt );
+	G_duty	= getDuty( motor_millivolt, supply_voltage );
 	exciteWinding( G_direction_rotation, G_duty );
 
 	return	0;
 }
 
 
-static unsigned char	getDirection( double voltage )
+static unsigned char	getDirection( signed int voltage )
 {
 	return	(voltage < 0) ? CCW : CW;
 }
 
 
-static unsigned long	getDuty( double target_voltage, double supply_voltage )
+static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage )
 {
-	target_voltage	= fabs( target_voltage );
+	target_voltage	= abs( target_voltage );
 
 	if( supply_voltage <= 0 ){
 		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
@@ -202,14 +202,14 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 /**************************************/
 /*テストコード*/
 /**************************************/
-void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsigned long period_ms )
+void	Test_driveMotor_sinWave( signed int max_voltage, unsigned char num_loop, unsigned long period_ms )
 {
 	/*モータをサイン関数に法って動かす関数*/
 	const double	PI_2_ = 6.28, STEP_ = 0.0628;
 
 	unsigned char	i;
 	unsigned long	delay;
-	double	voltage;
+	signed int	voltage;
 
 	/*周期が短すぎると危険なため，制限をかける(500ms)*/
 	if( period_ms < 500 ){
@@ -229,7 +229,7 @@ void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsign
 }
 
 
-void	Test_driveMotor_bangbang( double voltage, unsigned char num_loop, unsigned long period_ms )
+void	Test_driveMotor_bangbang( signed int voltage, unsigned char num_loop, unsigned long period_ms )
 {
 	/*モータのCW/CCWを切り替える実験*/
 
