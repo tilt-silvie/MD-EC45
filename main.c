@@ -29,7 +29,24 @@ int main(void)
 	initializeComm();
 	initializeMotor();
 
-	while( 1 );
+	Order	order;
+	while( 1 ){
+		unsigned char*	p_data;
+		unsigned char	temp;
+
+		order	= fetchOrder();
+
+		switch( order.command ){
+		case	COMMAND_TEST_SINWAVE:
+			driveMotorSinWave(order);
+			break;
+
+		default:
+			break;
+		}
+
+		__delay_ms(100);
+	}
 	return	0;
 }
 
