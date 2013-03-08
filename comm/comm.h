@@ -8,7 +8,7 @@
 
 
 /****************************************/
-/*#define	_DEBUG*/
+#define	_DEBUG
 /****************************************/
 
 
@@ -17,7 +17,7 @@
 /****************************************/
 
 /****************************************/
-#define	MAX_NUM_OF_DATA	10
+#define	MAX_DATA	10
 
 #define	COMMAND_NULL			0x00
 #define	COMMAND_TEST_SINWAVE	0x01
@@ -25,7 +25,7 @@
 
 typedef struct	Order{
 	unsigned char	command;
-	char 	data[MAX_NUM_OF_DATA];
+	char 	data[MAX_DATA];
 }Order;
 /****************************************/
 
@@ -33,6 +33,15 @@ typedef struct	Order{
 /****************************************/
 void	initializeComm( void );
 Order	fetchOrder( void );
+/****************************************/
+
+
+
+/****************************************/
+/*テストコード*/
+#ifdef	_DEBUG
+void	Test_fetchOrder( void );
+#endif
 /****************************************/
 
 #endif	/*_COMM_H_*/
