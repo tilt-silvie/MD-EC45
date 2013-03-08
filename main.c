@@ -9,11 +9,18 @@
 
 #include	<xc.h>
 #include	<libpic30.h>
+
 #include	"main.h"
 #include	"pin_assign.h"
 #include	"motor/motor.h"
 #include	"comm/comm.h"
 
+#include	"assert/assert.h"
+/********************************************************/
+
+
+/********************************************************/
+static void	driveMotorSinWave( Order order );
 /********************************************************/
 
 int main(void) 
@@ -30,6 +37,18 @@ int main(void)
 
 /********************************************************/
 
+
+/********************************************************/
+static void	driveMotorSinWave( Order order )
+{
+	double			voltage		= 12.0 / 256 * order.data[0];
+	unsigned char	num_loop	= order.data[1];
+	unsigned long	period_ms	= order.data[2] * 1000;
+
+	printf("num_loop = %3d\n", num_loop);
+	Test_driveMotor_sinWave( voltage, num_loop, period_ms );
+}
+/********************************************************/
 
 
 /********************************************************/
@@ -63,3 +82,16 @@ void	initializeIO( void )
 
 
 /********************************************************/
+
+
+
+/********************************************************/
+/*テストコード*/
+#ifdef	_DEBUG
+#endif
+
+
+/********************************************************/
+
+
+
