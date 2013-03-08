@@ -4,6 +4,7 @@
 /****************************************/
 
 #include	<xc.h>
+#include	<stdlib.h>
 #include	<math.h>
 #include	"motor.h"
 #include	"../pin_assign.h"
@@ -45,7 +46,7 @@ void	initializeMotor( void )
 	exciteWinding( G_direction_rotation, G_duty );
 
 #ifdef	_DEBUG
-	/*Test_getFowardExcitationPhase();*/
+	Test_getFowardExcitationPhase();
 	/*Test_getBackwardExcitationPhase();*/
 	/*Test_getDicretion();*/
 	/*Test_getDuty();*/
@@ -279,13 +280,13 @@ void	Test_getFowardExcitationPhase( void )
 	printf("--Test start!--\n");
 
 	/* **** */
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_2 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_3 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_PHASE_4 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_PHASE_5 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_6 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_1 )
-	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_1_2 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_1_3 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_2_3 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_2_1 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_3_1 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_3_2 )
+	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_BRAKE )
 	/* **** */
 
 	printf("-- Test Passed! --\n");
@@ -301,13 +302,13 @@ void	Test_getBackwardExcitationPhase( void )
 	printf("--Test start!--\n");
 
 	/* **** */
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_6 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_1 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_PHASE_2 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_PHASE_3 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_4 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_5 )
-	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_2_1 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_3_1 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_3_2 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_1_2 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_1_3 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_2_3 )
+	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_BRAKE )
 	/* **** */
 
 	printf("-- Test Passed! --\n");
