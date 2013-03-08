@@ -9,11 +9,20 @@
 
 #include	<xc.h>
 #include	<libpic30.h>
+
 #include	"main.h"
 #include	"pin_assign.h"
 #include	"motor/motor.h"
 #include	"comm/comm.h"
 
+#include	"assert/assert.h"
+/********************************************************/
+
+
+/********************************************************/
+static void	executeOrder( Order order );
+static void	driveMotorSinWave( Order order );
+static void	driveMotorBangbang( Order order );
 /********************************************************/
 
 int main(void) 
@@ -22,14 +31,54 @@ int main(void)
 	initializeComm();
 	initializeMotor();
 
-	while( 1 );
-	return	0;
+	Order	order;
+	while( 1 ){
+		order	= fetchOrder();
+		executeOrder( order );
+	}
 }
 
 
 
 /********************************************************/
 
+
+/********************************************************/
+static void	executeOrder( Order order )
+{
+	switch( order.command ){
+	case	COMMAND_TEST_SINWAVE:
+		driveMotorSinWave(order);
+		break;
+
+	case	COMMAND_TEST_BANGBANG:
+		driveMotorBangbang(order);
+
+	default:
+		break;
+	}
+}
+/********************************************************/
+static void	driveMotorSinWave( Order order )
+{
+	double			voltage		= 12.0 / 256 * order.data[0];
+	unsigned char	num_loop	= order.data[1];
+	unsigned long	period_ms	= order.data[2] * 1000;
+
+	Test_driveMotor_sinWave( voltage, num_loop, period_ms );
+}
+
+
+static void	driveMotorBangbang( Order order )
+{
+	double			voltage		= 12.0 / 256 * order.data[0];
+	unsigned char	num_loop	= order.data[1];
+	unsigned long	period_ms	= order.data[2] * 1000;
+
+	Test_driveMotor_bangbang( voltage, num_loop, period_ms );
+}
+
+/********************************************************/
 
 
 /********************************************************/
@@ -63,3 +112,16 @@ void	initializeIO( void )
 
 
 /********************************************************/
+
+
+
+/********************************************************/
+/*テストコード*/
+#ifdef	_DEBUG
+#endif
+
+
+/********************************************************/
+
+
+
