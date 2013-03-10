@@ -20,7 +20,7 @@
 
 
 /****************************************/
-/*#define	_DEBUG*/
+#define	_DEBUG
 #include	"../assert/assert.h"
 /****************************************/
 /**************************************/
@@ -83,17 +83,18 @@ static unsigned char	getDirection( signed int voltage )
 
 static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage )
 {
-	target_voltage	= abs( target_voltage );
+	unsigned long	target_voltage_l; /* int型のままだとオーバーフローするので */ 
+
+	target_voltage_l	= abs( target_voltage );
 
 	if( supply_voltage <= 0 ){
 		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
 	}
-
 	if( target_voltage > supply_voltage ){
 		return	100;
 	}
 	
-	return	target_voltage / supply_voltage * 100;
+	return	target_voltage_l * 100 / supply_voltage;
 }
 
 
@@ -233,27 +234,25 @@ void	Test_driveMotor_sinWave( signed int max_voltage, unsigned char num_loop, un
 
 void	Test_driveMotor_bangbang( signed int voltage, unsigned char num_loop, unsigned long period_ms )
 {
-/*
- *    [>モータのCW/CCWを切り替える実験<]
- *
- *    unsigned char	i;
- *    unsigned long	delay;
- *
- *    [>周期が短すぎると危険なため，制限をかける(500ms)<]
- *    if( period_ms < 500 ){
- *        period_ms	= 500;
- *    }
- *    delay	= period_ms / 2;
- *
- *    for( i = 0; i < num_loop; i++ ){
- *        driveMotor( voltage );
- *        __delay_ms( delay );
- *        driveMotor( -voltage );
- *        __delay_ms( delay );
- *    }
- *
- *    driveMotor( 0.0 );
- */
+	/*モータのCW/CCWを切り替える実験*/
+
+	unsigned char	i;
+	unsigned long	delay;
+
+	/*周期が短すぎると危険なため，制限をかける(500ms)*/
+	if( period_ms < 500 ){
+		period_ms	= 500;
+	}
+	delay	= period_ms / 2;
+
+	for( i = 0; i < num_loop; i++ ){
+		driveMotor( voltage );
+		__delay_ms( delay );
+		driveMotor( -voltage );
+		__delay_ms( delay );
+	}
+
+	driveMotor( 0.0 );
 }
 #ifdef	_DEBUG
 
@@ -262,10 +261,10 @@ void	Test_driveMotor( void )
 	unsigned long	i;
 
 	for( i = 0; i < 1000000; i++ );
+	puts("**Test_driveMotor**");
 
 	/* **** */
-	ASSERT( driveMotor( 12.0 ) == 0 )
-	ASSERT( driveMotor( 6 ) == 0 )
+
 	/* **** */
 
 }
@@ -342,6 +341,8 @@ void	Test_getDuty( void )
 	ASSERT( getDuty( -10, 10 ) == 100 )
 	ASSERT( getDuty( 0, 10 ) == 0 )
 	ASSERT( getDuty( 10, 5 ) == 100 )
+	ASSERT( getDuty( 5, 10 ) == 50 )
+	ASSERT( getDuty( 5, 15 ) == 33 )
 	ASSERT( getDuty( 10, 0 ) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND )
 	/* **** */
 

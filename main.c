@@ -53,6 +53,7 @@ static void	executeOrder( Order order )
 
 	case	COMMAND_TEST_BANGBANG:
 		driveMotorBangbang(order);
+		break;
 
 	default:
 		break;
@@ -61,7 +62,7 @@ static void	executeOrder( Order order )
 /********************************************************/
 static void	driveMotorSinWave( Order order )
 {
-	double			voltage		= 12.0 / 256 * order.data[0];
+	signed int		voltage		= order.data[0]	* 12000 / 128;
 	unsigned char	num_loop	= order.data[1];
 	unsigned long	period_ms	= order.data[2] * 1000;
 
@@ -71,7 +72,7 @@ static void	driveMotorSinWave( Order order )
 
 static void	driveMotorBangbang( Order order )
 {
-	double			voltage		= 12.0 / 256 * order.data[0];
+	signed int		voltage		= order.data[0]	* 12000 / 128;
 	unsigned char	num_loop	= order.data[1];
 	unsigned long	period_ms	= order.data[2] * 1000;
 
