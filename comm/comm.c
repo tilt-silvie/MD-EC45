@@ -91,8 +91,13 @@ void	Test_fetchOrder( void )
 			printf("Voltage = %3d, num_loop = %3d, period = %3d\n\n", order.data[0], order.data[1], order.data[2]);
 			break;
 
+		case	COMMAND_SPEED_OPENLOOP:
+			printf("Rcvd:SPEED_OPENLOOP\n");
+			printf("Voltage = %3d\n\n", order.data[0] );
+			break;
+
+
 		default:
-			printf("Rcvd:Invailed Data\n\n");
 			break;
 		}
 

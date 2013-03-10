@@ -22,6 +22,7 @@
 #define	COMMAND_NULL			0x00
 #define	COMMAND_TEST_SINWAVE	0x01
 #define	COMMAND_TEST_BANGBANG	0x02
+#define	COMMAND_SPEED_OPENLOOP	0x03
 
 typedef struct	Order{
 	unsigned char	command;
