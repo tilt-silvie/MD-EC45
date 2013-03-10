@@ -40,7 +40,9 @@ void	initializeComm( void )
 Order	fetchOrder( void )
 {
 	unsigned char	num_of_data = 5;
-	unsigned char	buffer[0], i, data_update = 0;
+	unsigned char	i, data_update = 0;
+	char	buffer[MAX_DATA];
+
 	Order	order;
 	
 	order.command	= COMMAND_NULL;
@@ -82,10 +84,18 @@ void	Test_fetchOrder( void )
 		switch( order.command ){
 		case	COMMAND_TEST_SINWAVE:
 			printf("Rcvd:TEST_SINWAVE\n");
+			printf("Voltage = %3d, num_loop = %3d, period = %3d\n\n", order.data[0], order.data[1], order.data[2]);
 			break;
 		case	COMMAND_TEST_BANGBANG:
 			printf("Rcvd:TEST_BANGBANG\n");
+			printf("Voltage = %3d, num_loop = %3d, period = %3d\n\n", order.data[0], order.data[1], order.data[2]);
 			break;
+
+		case	COMMAND_SPEED_OPENLOOP:
+			printf("Rcvd:SPEED_OPENLOOP\n");
+			printf("Voltage = %3d\n\n", order.data[0] );
+			break;
+
 
 		default:
 			break;
