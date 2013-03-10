@@ -4,12 +4,12 @@
 /****************************************/
 
 #include	<xc.h>
+#include	<stdlib.h>
 #include	<math.h>
 #include	"motor.h"
 #include	"../pin_assign.h"
 #include	"hall/hall.h"
 #include	"bridge/bridge.h"
-#include	"../assert/assert.h"
 
 #define	FCY	39613750
 #include	<libpic30.h>
@@ -19,6 +19,10 @@
 /**************************************/
 
 
+/****************************************/
+/*#define	_DEBUG*/
+#include	"../assert/assert.h"
+/****************************************/
 /**************************************/
 /*グローバル変数*/
 static unsigned char	G_direction_rotation = BRAKE;
@@ -28,8 +32,8 @@ static unsigned long	G_duty = 50;
 
 /**************************************/
 static void	exciteWinding( unsigned char direction_rotation, unsigned long duty );
-static unsigned char	getDirection( double voltage );
-static unsigned long	getDuty( double target_voltage, double supply_voltage );
+static unsigned char	getDirection( signed int voltage );
+static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
 static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
@@ -45,11 +49,11 @@ void	initializeMotor( void )
 	exciteWinding( G_direction_rotation, G_duty );
 
 #ifdef	_DEBUG
-	/*Test_getFowardExcitationPhase();*/
-	/*Test_getBackwardExcitationPhase();*/
-	/*Test_getDicretion();*/
-	/*Test_getDuty();*/
-	/*Test_driveMotor();*/
+	Test_getFowardExcitationPhase();
+	Test_getBackwardExcitationPhase();
+	Test_getDicretion();
+	Test_getDuty();
+	Test_driveMotor();
 #endif
 
 }
@@ -57,29 +61,29 @@ void	initializeMotor( void )
 
 
 /**************************************/
-unsigned char	driveMotor( double voltage )
+unsigned char	driveMotor( signed int motor_millivolt )
 {
 	/*TODO : supply_voltage はAD変換で随時取得するように*/
 
-	double	supply_voltage = 12.0;
+	signed int	supply_voltage = 12000;
 
-	G_direction_rotation	= getDirection( voltage );
-	G_duty	= getDuty( voltage, supply_voltage );
+	G_direction_rotation	= getDirection( motor_millivolt );
+	G_duty	= getDuty( motor_millivolt, supply_voltage );
 	exciteWinding( G_direction_rotation, G_duty );
 
 	return	0;
 }
 
 
-static unsigned char	getDirection( double voltage )
+static unsigned char	getDirection( signed int voltage )
 {
 	return	(voltage < 0) ? CCW : CW;
 }
 
 
-static unsigned long	getDuty( double target_voltage, double supply_voltage )
+static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage )
 {
-	target_voltage	= fabs( target_voltage );
+	target_voltage	= abs( target_voltage );
 
 	if( supply_voltage <= 0 ){
 		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
@@ -116,10 +120,6 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 
 	driveBridge( next_phase, duty );
 
-#ifdef	_DEBUG
-	printf("H1: %d ,H2: %d ,H3: %d || Now_Phase:%d ,NextPhase: %d (Dir: %d) \n", HALL_1, HALL_2, HALL_3, now_phase, next_phase, G_direction_rotation );
-	/*printf("Direction = %d : now = %d, next  = %d\n", G_direction_rotation, now_phase, next_phase );*/
-#endif
 }
 /**************************************/
 
@@ -202,54 +202,58 @@ static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase )
 /**************************************/
 /*テストコード*/
 /**************************************/
-void	Test_driveMotor_sinWave( double max_voltage, unsigned char num_loop, unsigned long period_ms )
+void	Test_driveMotor_sinWave( signed int max_voltage, unsigned char num_loop, unsigned long period_ms )
 {
-	/*モータをサイン関数に法って動かす関数*/
-	const double	PI_2_ = 6.28, STEP_ = 0.0628;
-
-	unsigned char	i;
-	unsigned long	delay;
-	double	voltage;
-
-	/*周期が短すぎると危険なため，制限をかける(500ms)*/
-	if( period_ms < 500 ){
-		period_ms	= 500;
-	}
-	delay	= period_ms / 100;
-
-	for( i = 0; i < num_loop; i++ ){
-		double	rad;
-
-		for( rad = 0.0; rad < PI_2_; rad+= STEP_ ){
-			voltage	= max_voltage * sin( rad );
-			driveMotor( voltage );
-			__delay_ms( delay );
-		}
-	}
+/*
+ *    [>モータをサイン関数に法って動かす関数<]
+ *    const double	PI_2_ = 6.28, STEP_ = 0.0628;
+ *
+ *    unsigned char	i;
+ *    unsigned long	delay;
+ *    signed int	voltage;
+ *
+ *    [>周期が短すぎると危険なため，制限をかける(500ms)<]
+ *    if( period_ms < 500 ){
+ *        period_ms	= 500;
+ *    }
+ *    delay	= period_ms / 100;
+ *
+ *    for( i = 0; i < num_loop; i++ ){
+ *        double	rad;
+ *
+ *        for( rad = 0.0; rad < PI_2_; rad+= STEP_ ){
+ *            voltage	= max_voltage * sin( rad );
+ *            driveMotor( voltage );
+ *            __delay_ms( delay );
+ *        }
+ *    }
+ */
 }
 
 
-void	Test_driveMotor_bangbang( double voltage, unsigned char num_loop, unsigned long period_ms )
+void	Test_driveMotor_bangbang( signed int voltage, unsigned char num_loop, unsigned long period_ms )
 {
-	/*モータのCW/CCWを切り替える実験*/
-
-	unsigned char	i;
-	unsigned long	delay;
-
-	/*周期が短すぎると危険なため，制限をかける(500ms)*/
-	if( period_ms < 500 ){
-		period_ms	= 500;
-	}
-	delay	= period_ms / 2;
-
-	for( i = 0; i < num_loop; i++ ){
-		driveMotor( voltage );
-		__delay_ms( delay );
-		driveMotor( -voltage );
-		__delay_ms( delay );
-	}
-
-	driveMotor( 0.0 );
+/*
+ *    [>モータのCW/CCWを切り替える実験<]
+ *
+ *    unsigned char	i;
+ *    unsigned long	delay;
+ *
+ *    [>周期が短すぎると危険なため，制限をかける(500ms)<]
+ *    if( period_ms < 500 ){
+ *        period_ms	= 500;
+ *    }
+ *    delay	= period_ms / 2;
+ *
+ *    for( i = 0; i < num_loop; i++ ){
+ *        driveMotor( voltage );
+ *        __delay_ms( delay );
+ *        driveMotor( -voltage );
+ *        __delay_ms( delay );
+ *    }
+ *
+ *    driveMotor( 0.0 );
+ */
 }
 #ifdef	_DEBUG
 
@@ -258,15 +262,12 @@ void	Test_driveMotor( void )
 	unsigned long	i;
 
 	for( i = 0; i < 1000000; i++ );
-	printf("\n\n**Test_driveMotor**\n");
-	printf("--Test start!--\n");
 
 	/* **** */
 	ASSERT( driveMotor( 12.0 ) == 0 )
 	ASSERT( driveMotor( 6 ) == 0 )
 	/* **** */
 
-	printf("-- Test Passed! --\n");
 }
 
 
@@ -275,20 +276,18 @@ void	Test_getFowardExcitationPhase( void )
 	unsigned long	i;
 
 	for( i = 0; i < 1000000; i++ );
-	printf("\n\n**Test_getFowardExcitationPhase**\n");
-	printf("--Test start!--\n");
+	puts("**Test_getFowardExcitationPhase**");
 
 	/* **** */
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_2 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_3 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_PHASE_4 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_PHASE_5 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_6 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_1 )
-	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_1_2 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_1_3 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_2_3 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_2_1 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_3_1 )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_3_2 )
+	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_BRAKE )
 	/* **** */
 
-	printf("-- Test Passed! --\n");
 }
 
 
@@ -297,20 +296,18 @@ void	Test_getBackwardExcitationPhase( void )
 	unsigned long	i;
 
 	for( i = 0; i < 1000000; i++ );
-	printf("\n\n**Test_getBackwardExcitationPhase**\n");
-	printf("--Test start!--\n");
+	puts("**Test_getBackwardExcitationPhase**");
 
 	/* **** */
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_PHASE_6 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_PHASE_1 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_PHASE_2 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_PHASE_3 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_PHASE_4 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_PHASE_5 )
-	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_PHASE_BRAKE )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_2_1 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_3_1 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_3_2 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_1_2 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_1_3 )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_2_3 )
+	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_BRAKE )
 	/* **** */
 
-	printf("-- Test Passed! --\n");
 }
 
 
@@ -319,8 +316,7 @@ void	Test_getDicretion( void )
 	unsigned long	i;
 
 	for( i = 0; i < 1000000; i++ );
-	printf("\n\n**Test_getDicretion**\n");
-	printf("--Test start!--\n");
+	puts("**Test_getDicretion**");
 
 	/* **** */
 	ASSERT( getDirection( 12.0 ) == CW )
@@ -331,7 +327,6 @@ void	Test_getDicretion( void )
 	ASSERT( getDirection( 0 ) == CW )
 	/* **** */
 
-	printf("-- Test Passed! --\n");
 }
 
 
@@ -340,8 +335,7 @@ void	Test_getDuty( void )
 	unsigned long	i;
 
 	for( i = 0; i < 1000000; i++ );
-	printf("\n\n**Test_getDuty**\n");
-	printf("--Test start!--\n");
+	puts("**Test_getDuty**");
 
 	/* **** */
 	ASSERT( getDuty( 10, 10 ) == 100 )
@@ -351,7 +345,6 @@ void	Test_getDuty( void )
 	ASSERT( getDuty( 10, 0 ) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND )
 	/* **** */
 
-	printf("-- Test Passed! --\n");
 }
 
 #endif
