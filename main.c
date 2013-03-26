@@ -15,6 +15,7 @@
 #include	"motor/motor.h"
 #include	"comm/comm.h"
 
+#include	"comm/uart/uart_dsPIC33F.h"
 #include	"assert/assert.h"
 /********************************************************/
 
@@ -32,6 +33,13 @@ int main(void)
 	initializeMotor();
 
 	Order	order;
+
+	defineAssertPuts( putsUart ;
+
+	__delay_ms( 1000 );
+	ASSERT( 1 == 1);
+	ASSERT( 1 == 0);
+
 	while( 1 ){
 		order	= fetchOrder();
 		executeOrder( order );
