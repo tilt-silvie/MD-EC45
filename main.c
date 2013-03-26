@@ -32,6 +32,7 @@ int main(void)
 	initializeMotor();
 
 	Order	order;
+
 	while( 1 ){
 		order	= fetchOrder();
 		executeOrder( order );
