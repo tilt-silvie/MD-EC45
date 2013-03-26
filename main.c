@@ -34,9 +34,8 @@ int main(void)
 
 	Order	order;
 
-	defineAssertPuts( putsUart ;
+	defineAssertPuts( putsUart );
 
-	__delay_ms( 1000 );
 	ASSERT( 1 == 1);
 	ASSERT( 1 == 0);
 
