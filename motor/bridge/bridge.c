@@ -51,6 +51,10 @@ static void	initializePWM( void )
 	config3 = PWM1_SEVOPS1 & PWM1_OSYNC_TCY & PWM1_UEN;
 
 	OpenMCPWM1( period, sptime, config1, config2, config3);
+
+
+	SetMCPWM1DeadTimeGeneration( PWM1_DTAPS1 & PWM1_DTA10 ); /*Deadtime = 250ns*/ 
+	P1DTCON2	= 0x0000;
 }
 
 
