@@ -4,8 +4,7 @@
 /**************************************/
 
 #include	<xc.h>
-#include	<timer.h>
-#include	<outcompare.h>
+#include	<pwm12.h>
 #include	"peripheral_pin.h"
 #include	"bridge.h"
 #include	"../../pin_assign.h"
@@ -38,8 +37,20 @@ void	initializeBridge( void )
 
 static void	initializePWM( void )
 {
-	OpenTimer2( T2_ON & T2_IDLE_STOP & T2_GATE_OFF & T2_PS_1_1 & T2_SOURCE_INT,  800 - 1 ); /* 50kHz */ 
-	OpenOC1( OC_IDLE_CON & OC_TIMER2_SRC & OC_PWM_FAULT_PIN_DISABLE, 0, 0 );
+	unsigned int    period, sptime;
+	unsigned int	config1, config2, config3;
+
+	period  = 799;  /* (Fcy / (Fpwm*PreScale)) - 1 */
+	sptime  = 0;    /* ?? */
+
+	config1	= PWM1_EN & PWM1_IDLE_STOP & PWM1_OP_SCALE1 & PWM1_IPCLK_SCALE1 &
+                PWM1_MOD_FREE;
+	config2 = PWM1_MOD1_COMP & PWM1_PEN1H & PWM1_PEN1L
+			& PWM1_MOD2_COMP & PWM1_PEN2H & PWM1_PEN2L
+			& PWM1_MOD3_COMP & PWM1_PEN3H & PWM1_PEN3L;
+	config3 = PWM1_SEVOPS1 & PWM1_OSYNC_TCY & PWM1_UEN;
+
+	OpenMCPWM1( period, sptime, config1, config2, config3);
 }
 
 
