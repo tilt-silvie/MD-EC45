@@ -153,7 +153,7 @@ static void	driveBridgeOff		( unsigned char num_of_bridge )
 
 	default:
 		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT_1L 
-						& PWM1_POUT_2H & PWM_POUT_2L
+						& PWM1_POUT_2H & PWM1_POUT_2L
 						& PWM1_POUT_3H & PWM1_POUT_3L 
 						& PWM1_POUT1H_INACT & PWM1_POUT1L_INACT 
 						& PWM1_POUT2H_INACT & PWM1_POUT2L_INACT 

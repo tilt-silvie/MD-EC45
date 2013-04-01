@@ -14,6 +14,7 @@
 #include	"pin_assign.h"
 #include	"motor/motor.h"
 #include	"comm/comm.h"
+#include	<pwm12.h>
 
 #include	"assert/assert.h"
 /********************************************************/
@@ -33,9 +34,15 @@ int main(void)
 
 	Order	order;
 
+	SetDCMCPWM1( 1, 800, 0);
+	SetDCMCPWM1( 2, 800, 0);
+	SetDCMCPWM1( 3, 800, 0);
+
 	while( 1 ){
-		order	= fetchOrder();
-		executeOrder( order );
+
+
+//		order	= fetchOrder();
+//		executeOrder( order );
 	}
 }
 
