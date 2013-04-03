@@ -63,55 +63,61 @@ unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 {
 	switch( phase ){
 	case	EXCITATION_3_2:
-		driveBridgeHighSide	( BRIDGE_3 );
-		driveBridgeLowSide	( BRIDGE_2 );
-		driveBridgeOff		( BRIDGE_1 );
+		OverrideMCPWM1( PWM1_POUT_2H & PWM1_POUT2H_INACT &
+						PWM1_POUT_2L & PWM1_POUT2L_ACT	 &
+						PWM1_POUT_1H & PWM1_POUT1H_INACT &
+						PWM1_POUT_1L & PWM1_POUT1L_INACT );
 		break;
 			
 	case	EXCITATION_1_2:
-		driveBridgeHighSide	( BRIDGE_1 );
-		driveBridgeLowSide	( BRIDGE_2 );
-		driveBridgeOff		( BRIDGE_3 );
+		OverrideMCPWM1( PWM1_POUT_2H & PWM1_POUT2H_INACT &
+						PWM1_POUT_2L & PWM1_POUT2L_ACT	 &
+						PWM1_POUT_3H & PWM1_POUT3H_INACT &
+						PWM1_POUT_3L & PWM1_POUT3L_INACT );
 		break;
 			
 	case	EXCITATION_1_3:
-		driveBridgeHighSide	( BRIDGE_1 );
-		driveBridgeLowSide	( BRIDGE_3 );
-		driveBridgeOff		( BRIDGE_2 );
+		OverrideMCPWM1( PWM1_POUT_3H & PWM1_POUT3H_INACT &
+						PWM1_POUT_3L & PWM1_POUT3L_ACT	 &
+						PWM1_POUT_2H & PWM1_POUT2H_INACT &
+						PWM1_POUT_2L & PWM1_POUT2L_INACT );
 		break;
 			
 	case	EXCITATION_2_3:
-		driveBridgeHighSide	( BRIDGE_2 );
-		driveBridgeLowSide	( BRIDGE_3 );
-		driveBridgeOff		( BRIDGE_1 );
+		OverrideMCPWM1( PWM1_POUT_3H & PWM1_POUT3H_INACT &
+						PWM1_POUT_3L & PWM1_POUT3L_ACT	 &
+						PWM1_POUT_1H & PWM1_POUT1H_INACT &
+						PWM1_POUT_1L & PWM1_POUT1L_INACT );
 		break;
 			
 	case	EXCITATION_2_1:
-		driveBridgeHighSide	( BRIDGE_2 );
-		driveBridgeLowSide	( BRIDGE_1 );
-		driveBridgeOff		( BRIDGE_3 );
+		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT1H_INACT &
+						PWM1_POUT_1L & PWM1_POUT1L_ACT	 &
+						PWM1_POUT_3H & PWM1_POUT3H_INACT &
+						PWM1_POUT_3L & PWM1_POUT3L_INACT );
 		break;
 			
 	case	EXCITATION_3_1:
-		driveBridgeHighSide	( BRIDGE_3 );
-		driveBridgeLowSide	( BRIDGE_1 );
-		driveBridgeOff		( BRIDGE_2 );
+		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT1H_INACT &
+						PWM1_POUT_1L & PWM1_POUT1L_ACT	 &
+						PWM1_POUT_2H & PWM1_POUT2H_INACT &
+						PWM1_POUT_2L & PWM1_POUT2L_INACT );
 		break;
 
 	case	EXCITATION_BRAKE:
-		driveBridgeLowSide	( BRIDGE_1 );
-		driveBridgeLowSide	( BRIDGE_2 );
-		driveBridgeLowSide	( BRIDGE_3 );
+		OverrideMCPWM1( PWM1_POUT_1L & PWM1_POUT1L_ACT	&
+						PWM1_POUT_2L & PWM1_POUT2L_ACT	&
+						PWM1_POUT_3L & PWM1_POUT3L_ACT	);
 		break;
 
 	default:
-		driveBridgeOff		( BRIDGE_1 );
-		driveBridgeOff		( BRIDGE_2 );
-		driveBridgeOff		( BRIDGE_3 );
+		OverrideMCPWM1( PWM1_POUT_1L & PWM1_POUT1L_ACT	&
+						PWM1_POUT_2L & PWM1_POUT2L_ACT	&
+						PWM1_POUT_3L & PWM1_POUT3L_ACT	);
 		break;
 	}
 
-	SetDCOC1PWM( calculatePR( duty_percent ) );
+	/*SetDCOC1PWM( calculatePR( duty_percent ) );*/
 
 	return	0;
 }
