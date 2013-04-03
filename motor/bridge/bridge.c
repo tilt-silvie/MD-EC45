@@ -9,9 +9,12 @@
 #include	"bridge.h"
 #include	"../../pin_assign.h"
 
-#ifdef	DO_TEST
-#include	<stdio.h>
+#define	_DEBUG
+#ifdef	_DEBUG
+#include	"../../assert/assert.h"
 #endif
+
+
 
 /**************************************/
 static void	initializePWM( void );
@@ -19,6 +22,12 @@ static unsigned int	calculatePR( unsigned long duty_percent );
 static void	driveBridgeOff		( unsigned char num_of_bridge );
 static void	driveBridgeHighSide	( unsigned char num_of_bridge );
 static void	driveBridgeLowSide	( unsigned char num_of_bridge );
+/**************************************/
+
+/**************************************/
+#ifdef	_DEBUG
+static void	test_calculatePR( void );
+#endif
 /**************************************/
 
 
@@ -32,6 +41,10 @@ static unsigned int	G_max_pr2 = 1600;
 void	initializeBridge( void )
 {
 	initializePWM();
+
+#ifdef	_DEBUG
+	test_calculatePR();
+#endif
 }
 
 
@@ -227,6 +240,32 @@ static void	driveBridgeLowSide	( unsigned char num_of_bridge )
 		break;
 	}
 }
+
+
+/**************************************/
+
+
+
+/**************************************/
+/*テストケース*/
+#ifdef	_DEBUG
+
+
+static void	test_calculatePR( void )
+{
+	unsigned int	i;
+	for( i=0; i<0xFFFF; i++ );
+
+	ASSERT( calculatePR( 0 )	== 0 );
+	ASSERT( calculatePR( 50 )	== 800 );
+	ASSERT( calculatePR( 94 )	== 1504 );
+	ASSERT( calculatePR( 95 )	== 1520 );
+	ASSERT( calculatePR( 100 )	== 1520 );
+}
+
+
+#endif
+
 
 
 /**************************************/
