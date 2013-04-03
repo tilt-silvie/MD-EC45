@@ -34,9 +34,6 @@ int main(void)
 
 	Order	order;
 
-	SetDCMCPWM1( 1, 800, 0);
-	SetDCMCPWM1( 2, 800, 0);
-	SetDCMCPWM1( 3, 800, 0);
 
 	while( 1 ){
 

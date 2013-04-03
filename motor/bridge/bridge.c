@@ -24,7 +24,7 @@ static void	driveBridgeLowSide	( unsigned char num_of_bridge );
 
 
 /**************************************/
-static unsigned int	G_max_pr2 = 800;
+static unsigned int	G_max_pr2 = 1600;
 /**************************************/
 
 
@@ -117,7 +117,9 @@ unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 		break;
 	}
 
-	/*SetDCOC1PWM( calculatePR( duty_percent ) );*/
+	SetDCMCPWM1( 1, calculatePR(duty_percent), 0);
+	SetDCMCPWM1( 2, calculatePR(duty_percent), 0);
+	SetDCMCPWM1( 3, calculatePR(duty_percent), 0);
 
 	return	0;
 }
@@ -128,10 +130,11 @@ static unsigned int	calculatePR( unsigned long duty_percent )
 {
     unsigned int    calculated_pr;
 
-    calculated_pr   = duty_percent * G_max_pr2 / 100;
-	if( calculated_pr >= G_max_pr2 ){
-		calculated_pr	= G_max_pr2 - 5;
+	if( duty_percent > 95 ){
+		duty_percent	= 95;
 	}
+
+    calculated_pr   = duty_percent * G_max_pr2 / 100;
 
 	return	calculated_pr;
 }
