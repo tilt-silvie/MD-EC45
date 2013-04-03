@@ -34,12 +34,9 @@ int main(void)
 
 	Order	order;
 
-
 	while( 1 ){
-
-
-//		order	= fetchOrder();
-//		executeOrder( order );
+		order	= fetchOrder();
+		executeOrder( order );
 	}
 }
 
@@ -82,6 +79,7 @@ static void	driveMotorBangbang( Order order )
 	unsigned long	period_ms	= order.data[2] * 1000;
 
 	Test_driveMotor_bangbang( voltage, num_loop, period_ms );
+	putsUart( "BNBN" );
 }
 
 /********************************************************/

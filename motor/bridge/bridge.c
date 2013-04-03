@@ -9,7 +9,7 @@
 #include	"bridge.h"
 #include	"../../pin_assign.h"
 
-#define	_DEBUG
+/*#define	_DEBUG*/
 #ifdef	_DEBUG
 #include	"../../assert/assert.h"
 #endif
