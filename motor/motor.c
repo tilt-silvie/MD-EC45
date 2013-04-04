@@ -121,7 +121,7 @@ static void	exciteWinding( unsigned char direction_rotation, unsigned long duty 
 		break;
 	}
 
-	driveBridge( next_phase, duty );
+	driveBridge( next_phase );
 
 }
 /**************************************/

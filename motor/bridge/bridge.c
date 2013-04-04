@@ -69,7 +69,7 @@ static void	initializePWM( void )
 
 
 /**************************************/
-unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
+extern void	driveBridge( unsigned char phase )
 {
 	switch( phase ){
 	case	EXCITATION_3_2:

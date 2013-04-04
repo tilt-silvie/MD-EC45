@@ -33,7 +33,7 @@
 
 /**************************************/
 void	initializeBridge( void );
-unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent );
+extern void	driveBridge( unsigned char phase );
 extern void	setDutyBridge( unsigned int duty_int );
 /**************************************/
 
