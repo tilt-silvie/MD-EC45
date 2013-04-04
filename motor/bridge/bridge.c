@@ -19,9 +19,6 @@
 /**************************************/
 static void	initializePWM( void );
 static unsigned int	calculatePR( unsigned long duty_percent );
-static void	driveBridgeOff		( unsigned char num_of_bridge );
-static void	driveBridgeHighSide	( unsigned char num_of_bridge );
-static void	driveBridgeLowSide	( unsigned char num_of_bridge );
 /**************************************/
 
 /**************************************/
@@ -150,95 +147,6 @@ static unsigned int	calculatePR( unsigned long duty_percent )
     calculated_pr   = duty_percent * G_max_pr2 / 100;
 
 	return	calculated_pr;
-}
-
-
-/**************************************/
-
-static void	driveBridgeOff		( unsigned char num_of_bridge )
-{
-	switch( num_of_bridge ){
-	case	BRIDGE_1:
-		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT_1L 
-						& PWM1_POUT1H_INACT & PWM1_POUT1L_INACT );
-		break;
-
-	case	BRIDGE_2:
-		OverrideMCPWM1( PWM1_POUT_2H & PWM1_POUT_2L 
-						& PWM1_POUT2H_INACT & PWM1_POUT2L_INACT );
-		break;
-
-	case	BRIDGE_3:
-		OverrideMCPWM1( PWM1_POUT_3H & PWM1_POUT_3L 
-						& PWM1_POUT3H_INACT & PWM1_POUT3L_INACT );
-		break;
-
-	default:
-		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT_1L 
-						& PWM1_POUT_2H & PWM1_POUT_2L
-						& PWM1_POUT_3H & PWM1_POUT_3L 
-						& PWM1_POUT1H_INACT & PWM1_POUT1L_INACT 
-						& PWM1_POUT2H_INACT & PWM1_POUT2L_INACT 
-						& PWM1_POUT3H_INACT & PWM1_POUT3L_INACT );
-		break;
-	}
-}
-
-
-static void	driveBridgeHighSide	( unsigned char num_of_bridge )
-{
-	switch( num_of_bridge ){
-	case	BRIDGE_1:
-		PWM_MODE_1	= RP_OC1;
-		ENABLE_1	= 1;
-		break;
-
-	case	BRIDGE_2:
-		PWM_MODE_2	= RP_OC1;
-		ENABLE_2	= 1;
-		break;
-
-	case	BRIDGE_3:
-		PWM_MODE_3	= RP_OC1;
-		ENABLE_3	= 1;
-		break;
-
-	default:
-		ENABLE_1	= 0;
-		ENABLE_2	= 0;
-		ENABLE_3	= 0;
-		break;
-	}
-}
-	
-
-static void	driveBridgeLowSide	( unsigned char num_of_bridge )
-{
-	switch( num_of_bridge ){
-	case	BRIDGE_1:
-		PWM_MODE_1	= RP_NULL;
-		PWM_1		= 0;
-		ENABLE_1	= 1;
-		break;
-
-	case	BRIDGE_2:
-		PWM_MODE_2	= RP_NULL;
-		PWM_2		= 0;
-		ENABLE_2	= 1;
-		break;
-
-	case	BRIDGE_3:
-		PWM_MODE_3	= RP_NULL;
-		PWM_3		= 0;
-		ENABLE_3	= 1;
-		break;
-
-	default:
-		ENABLE_1	= 0;
-		ENABLE_2	= 0;
-		ENABLE_3	= 0;
-		break;
-	}
 }
 
 
