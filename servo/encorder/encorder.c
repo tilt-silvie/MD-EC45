@@ -6,6 +6,7 @@
  */
 
 #include	"encorder.h"
+#include	<qei.h>
 
 /****************************************/
 extern void	initializeEncorder( void )
@@ -22,6 +23,15 @@ extern void	initializeEncorder( void )
 	RPINR14 = 0b0000011100000110;   /* RP7 is QEB input and RP6 is QEA input */
 	_TRISB6 = 1;    _TRISB7  = 1;
 
-	OpenQEI( qei_config1, qei_config2 );
+	OpenQEI( config_1, config_2 );
+}
+/****************************************/
+
+
+/****************************************/
+extern unsigned int	readCountEncorder( void )
+{
+
+	return	ReadQEI();
 }
 /****************************************/

@@ -12,7 +12,7 @@
 /***************************************/
 
 extern void	initializeEncorder( void );
-extern unsigned int	getCountEncorder( void );
+extern unsigned int	readCountEncorder( void );
 extern void	resetCountEncorder( void );
 
 /***************************************/
