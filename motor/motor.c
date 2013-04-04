@@ -340,13 +340,16 @@ void	Test_getDuty( void )
 	puts("**Test_getDuty**");
 
 	/* **** */
-	ASSERT( getDuty( 10, 10 ) == 0xFFFF );
-	ASSERT( getDuty( -10, 10 ) == 0xFFFF );
-	ASSERT( getDuty( 0, 10 ) == 0 );
-	ASSERT( getDuty( 10, 5 ) == 0xFFFF );
-	ASSERT( getDuty( 5, 10 ) == 32767 );
-	ASSERT( getDuty( 5, 15 ) == 0xFFFF / 3 );
-	ASSERT( getDuty( 10, 0 ) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND );
+	ASSERT( getDuty( 10		, 10	) == 0xFFFF );
+	ASSERT( getDuty( -10	, 10	) == 0xFFFF );
+	ASSERT( getDuty( 0		, 10	) == 0		);
+	ASSERT( getDuty( 10		, 5		) == 0xFFFF );
+	ASSERT( getDuty( 5		, 10	) == 32767	);
+	ASSERT( getDuty( 5		, 15	) == 0xFFFF / 3 );
+	ASSERT( getDuty( 10		, 0		) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND );
+	ASSERT( getDuty( 12000	, 12000	) == 0xFFFF	);
+	ASSERT( getDuty( -12000	, 12000	) == 0xFFFF	);
+	ASSERT( getDuty( -6000	, 12000	) == 32767	);
 	/* **** */
 
 }
