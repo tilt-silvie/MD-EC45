@@ -28,6 +28,7 @@ extern unsigned char	get1byte( unsigned char* data )
 void	initializeComm( void )
 {
 	initializeUart( 9, 8, FCY*2, UART_BAUDRATE);
+	defineAssertPuts( putsUart );
 
 #ifdef	_DEBUG
 	Test_fetchOrder();

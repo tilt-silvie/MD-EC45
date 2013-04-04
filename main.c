@@ -14,6 +14,7 @@
 #include	"pin_assign.h"
 #include	"motor/motor.h"
 #include	"comm/comm.h"
+#include	<pwm12.h>
 
 #include	"assert/assert.h"
 /********************************************************/
@@ -73,11 +74,11 @@ static void	driveMotorSinWave( Order order )
 
 static void	driveMotorBangbang( Order order )
 {
-	signed int		voltage		= order.data[0]	* 12000 / 128;
+	signed int		voltage		= order.data[0];
 	unsigned char	num_loop	= order.data[1];
 	unsigned long	period_ms	= order.data[2] * 1000;
 
-	Test_driveMotor_bangbang( voltage, num_loop, period_ms );
+	Test_driveMotor_bangbang( voltage*100, num_loop, period_ms );
 }
 
 /********************************************************/
