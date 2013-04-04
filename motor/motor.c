@@ -20,7 +20,7 @@
 
 
 /****************************************/
-/*#define	_DEBUG*/
+#define	_DEBUG
 #include	"../assert/assert.h"
 /****************************************/
 /**************************************/
@@ -33,7 +33,7 @@ static unsigned long	G_duty = 0;
 /**************************************/
 static void	exciteWinding( unsigned char direction_rotation );
 static unsigned char	getDirection( signed int voltage );
-static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage );
+static unsigned int	getDuty( signed int target_voltage, signed int supply_voltage );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
 static unsigned char	getFowardExcitationPhase( unsigned char hall_phase ); 
 /**************************************/
@@ -49,11 +49,13 @@ void	initializeMotor( void )
 	exciteWinding( G_direction_rotation );
 
 #ifdef	_DEBUG
-	Test_getFowardExcitationPhase();
-	Test_getBackwardExcitationPhase();
-	Test_getDicretion();
+	/*
+	 *Test_getFowardExcitationPhase();
+	 *Test_getBackwardExcitationPhase();
+	 *Test_getDicretion();
+	 */
 	Test_getDuty();
-	Test_driveMotor();
+	/*Test_driveMotor();*/
 #endif
 
 }
@@ -83,7 +85,7 @@ static unsigned char	getDirection( signed int voltage )
 }
 
 
-static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage )
+static unsigned int	getDuty( signed int target_voltage, signed int supply_voltage )
 {
 	unsigned long	target_voltage_l; /* int型のままだとオーバーフローするので */ 
 
@@ -93,10 +95,10 @@ static unsigned long	getDuty( signed int target_voltage, signed int supply_volta
 		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
 	}
 	if( target_voltage > supply_voltage ){
-		return	100;
+		return	0xFFFF;
 	}
 	
-	return	target_voltage_l * 100 / supply_voltage;
+	return	(unsigned int)(target_voltage_l * 0xFFFF / supply_voltage);
 }
 
 
@@ -280,13 +282,13 @@ void	Test_getFowardExcitationPhase( void )
 	puts("**Test_getFowardExcitationPhase**");
 
 	/* **** */
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_1_2 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_1_3 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_2_3 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_2_1 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_3_1 )
-	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_3_2 )
-	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_BRAKE )
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_1_2 );
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_1_3 );
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_2_3 );
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_2_1 );
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_3_1 );
+	ASSERT( getFowardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_3_2 );
+	ASSERT( getFowardExcitationPhase( 255 ) == EXCITATION_BRAKE );
 	/* **** */
 
 }
@@ -300,13 +302,13 @@ void	Test_getBackwardExcitationPhase( void )
 	puts("**Test_getBackwardExcitationPhase**");
 
 	/* **** */
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_2_1 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_3_1 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_3_2 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_1_2 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_1_3 )
-	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_2_3 )
-	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_BRAKE )
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_1 ) == EXCITATION_2_1 );
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_2 ) == EXCITATION_3_1 );
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_3 ) == EXCITATION_3_2 );
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_4 ) == EXCITATION_1_2 );
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_5 ) == EXCITATION_1_3 );
+	ASSERT( getBackwardExcitationPhase( HALL_PHASE_6 ) == EXCITATION_2_3 );
+	ASSERT( getBackwardExcitationPhase( 255 ) == EXCITATION_BRAKE );
 	/* **** */
 
 }
@@ -320,12 +322,12 @@ void	Test_getDicretion( void )
 	puts("**Test_getDicretion**");
 
 	/* **** */
-	ASSERT( getDirection( 12.0 ) == CW )
-	ASSERT( getDirection( -12.0 ) == CCW )
-	ASSERT( getDirection( 10 ) == CW )
-	ASSERT( getDirection( -10 ) == CCW )
-	ASSERT( getDirection( 0.0 ) == CW )
-	ASSERT( getDirection( 0 ) == CW )
+	ASSERT( getDirection( 12.0 ) == CW );
+	ASSERT( getDirection( -12.0 ) == CCW );
+	ASSERT( getDirection( 10 ) == CW );
+	ASSERT( getDirection( -10 ) == CCW );
+	ASSERT( getDirection( 0.0 ) == CW );
+	ASSERT( getDirection( 0 ) == CW );
 	/* **** */
 
 }
@@ -339,13 +341,13 @@ void	Test_getDuty( void )
 	puts("**Test_getDuty**");
 
 	/* **** */
-	ASSERT( getDuty( 10, 10 ) == 100 )
-	ASSERT( getDuty( -10, 10 ) == 100 )
-	ASSERT( getDuty( 0, 10 ) == 0 )
-	ASSERT( getDuty( 10, 5 ) == 100 )
-	ASSERT( getDuty( 5, 10 ) == 50 )
-	ASSERT( getDuty( 5, 15 ) == 33 )
-	ASSERT( getDuty( 10, 0 ) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND )
+	ASSERT( getDuty( 10, 10 ) == 0xFFFF );
+	ASSERT( getDuty( -10, 10 ) == 0xFFFF );
+	ASSERT( getDuty( 0, 10 ) == 0 );
+	ASSERT( getDuty( 10, 5 ) == 0xFFFF );
+	ASSERT( getDuty( 5, 10 ) == 32767 );
+	ASSERT( getDuty( 5, 15 ) == 0xFFFF / 3 );
+	ASSERT( getDuty( 10, 0 ) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND );
 	/* **** */
 
 }
