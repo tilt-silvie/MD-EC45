@@ -34,4 +34,10 @@ extern unsigned int	readCountEncorder( void )
 
 	return	ReadQEI();
 }
+
+
+extern void	resetCountEncorder( void )
+{
+	POSCNT	= 32768;
+}
 /****************************************/
