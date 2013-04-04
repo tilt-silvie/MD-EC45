@@ -127,11 +127,20 @@ unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 		break;
 	}
 
-	SetDCMCPWM1( 1, calculatePR(duty_percent), 0);
-	SetDCMCPWM1( 2, calculatePR(duty_percent), 0);
-	SetDCMCPWM1( 3, calculatePR(duty_percent), 0);
-
 	return	0;
+}
+
+
+
+extern void	setDutyBridge( unsigned int duty_int )
+{
+	unsigned int	calculated_ptper;
+
+	calculated_ptper	= calculatePR( duty_int );
+
+	SetDCMCPWM1( 1, calculated_ptper, 0);
+	SetDCMCPWM1( 2, calculated_ptper, 0);
+	SetDCMCPWM1( 3, calculated_ptper, 0);
 }
 
 

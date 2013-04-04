@@ -69,6 +69,8 @@ unsigned char	driveMotor( signed int motor_millivolt )
 
 	G_direction_rotation	= getDirection( motor_millivolt );
 	G_duty	= getDuty( motor_millivolt, supply_voltage );
+
+	setDutyBridge( G_duty );
 	exciteWinding( G_direction_rotation, G_duty );
 
 	return	0;
