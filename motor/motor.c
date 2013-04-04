@@ -26,7 +26,6 @@
 /**************************************/
 /*グローバル変数*/
 static unsigned char	G_direction_rotation = BRAKE;
-static unsigned long	G_duty = 0;
 /**************************************/
 
 
@@ -45,7 +44,6 @@ void	initializeMotor( void )
 	initializeHall();
 	initializeBridge();
 	G_direction_rotation	= BRAKE;
-	G_duty	= 0;
 	exciteWinding( G_direction_rotation );
 
 #ifdef	_DEBUG
@@ -68,9 +66,10 @@ unsigned char	driveMotor( signed int motor_millivolt )
 	/*TODO : supply_voltage はAD変換で随時取得するように*/
 
 	signed int	supply_voltage = 12000;
+	unsigned int	duty_int;
 
 	G_direction_rotation	= getDirection( motor_millivolt );
-	G_duty	= getDuty( motor_millivolt, supply_voltage );
+	duty_int	= getDuty( motor_millivolt, supply_voltage );
 
 	setDutyBridge( 0x8000 );
 	exciteWinding( G_direction_rotation );
