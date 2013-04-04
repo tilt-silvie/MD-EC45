@@ -18,12 +18,12 @@
 
 /**************************************/
 static void	initializePWM( void );
-static unsigned int	calculatePR( unsigned long duty_percent );
+static unsigned int	calculatePTPER( unsigned int duty_int );
 /**************************************/
 
 /**************************************/
 #ifdef	_DEBUG
-static void	test_calculatePR( void );
+static void	test_calculatePTPER( void );
 #endif
 /**************************************/
 
@@ -40,7 +40,7 @@ void	initializeBridge( void )
 	initializePWM();
 
 #ifdef	_DEBUG
-	test_calculatePR();
+	test_calculatePTPER();
 #endif
 }
 
@@ -134,9 +134,15 @@ extern void	driveBridge( unsigned char phase )
 
 extern void	setDutyBridge( unsigned int duty_int )
 {
+	/*
+	 *Dutyを設定する関数
+	 *    duty_int	: 0	~ 0xFFFF
+	 *    PWM Duty	: 0 ~ 100	[%]
+	 */
+
 	unsigned int	calculated_ptper;
 
-	calculated_ptper	= calculatePR( duty_int );
+	calculated_ptper	= calculatePTPER( duty_int );
 
 	SetDCMCPWM1( 1, calculated_ptper, 0);
 	SetDCMCPWM1( 2, calculated_ptper, 0);
@@ -145,17 +151,17 @@ extern void	setDutyBridge( unsigned int duty_int )
 
 
 
-static unsigned int	calculatePR( unsigned long duty_percent )
+static unsigned int	calculatePTPER( unsigned int duty_int )
 {
-    unsigned int    calculated_pr;
+	const unsigned int	MAX_PTPER_ = 1600, LIMIT_PTPER_ = 1520;
+    unsigned int    calculated_ptper;
 
-	if( duty_percent > 95 ){
-		duty_percent	= 95;
+    calculated_ptper	= (unsigned long)duty_int * MAX_PTPER_ / 0xFFFF;
+	if( calculated_ptper >= LIMIT_PTPER_ ){
+		calculated_ptper	= LIMIT_PTPER_;
 	}
 
-    calculated_pr   = duty_percent * G_max_pr2 / 100;
-
-	return	calculated_pr;
+	return	calculated_ptper;
 }
 
 
@@ -168,18 +174,15 @@ static unsigned int	calculatePR( unsigned long duty_percent )
 #ifdef	_DEBUG
 
 
-static void	test_calculatePR( void )
+static void	test_calculatePTPER( void )
 {
 	unsigned int	i;
 	for( i=0; i<0xFFFF; i++ );
 
-	ASSERT( calculatePR( 0 )	== 0 );
-	ASSERT( calculatePR( 50 )	== 800 );
-	ASSERT( calculatePR( 94 )	== 1504 );
-	ASSERT( calculatePR( 95 )	== 1520 );
-	ASSERT( calculatePR( 100 )	== 1520 );
+	ASSERT( calculatePTPER( 0		)	== 0	);
+	ASSERT( calculatePTPER( 0xFFFF	)	== 1520	);
+	ASSERT( calculatePTPER( 32768	)	== 800	);
 }
-
 
 #endif
 
