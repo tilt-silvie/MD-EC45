@@ -14,13 +14,9 @@
 #define	FCY	39613750
 #include	<libpic30.h>
 
-/**************************************/
-#define	SUPPLY_VOLTAGE_IS_UNDER_THE_GND	0xFFFF
-/**************************************/
-
 
 /****************************************/
-#define	_DEBUG
+/*#define	_DEBUG*/
 #include	"../assert/assert.h"
 /****************************************/
 /**************************************/
@@ -70,7 +66,7 @@ unsigned char	driveMotor( signed int motor_millivolt )
 
 	G_direction_rotation	= getDirection( motor_millivolt );
 	duty_int	= getDuty( motor_millivolt, supply_voltage );
-
+	
 	setDutyBridge( duty_int );
 	exciteWinding( G_direction_rotation );
 
@@ -91,9 +87,10 @@ static unsigned int	getDuty( signed int target_voltage, signed int supply_voltag
 	target_voltage_l	= abs( target_voltage );
 
 	if( supply_voltage <= 0 ){
-		return	SUPPLY_VOLTAGE_IS_UNDER_THE_GND;
+		return	0;
 	}
-	if( target_voltage > supply_voltage ){
+
+	if( target_voltage_l > supply_voltage ){
 		return	0xFFFF;
 	}
 	
@@ -346,7 +343,6 @@ void	Test_getDuty( void )
 	ASSERT( getDuty( 10		, 5		) == 0xFFFF );
 	ASSERT( getDuty( 5		, 10	) == 32767	);
 	ASSERT( getDuty( 5		, 15	) == 0xFFFF / 3 );
-	ASSERT( getDuty( 10		, 0		) == SUPPLY_VOLTAGE_IS_UNDER_THE_GND );
 	ASSERT( getDuty( 12000	, 12000	) == 0xFFFF	);
 	ASSERT( getDuty( -12000	, 12000	) == 0xFFFF	);
 	ASSERT( getDuty( -6000	, 12000	) == 32767	);
