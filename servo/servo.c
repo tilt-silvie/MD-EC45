@@ -39,7 +39,13 @@ static void	initializeTimer( void )
 /*******************************************/
 void _ISR	_T1Interrupt( void )
 {
+	signed long			count_enc, speed;
+
 	_T1IF	= 0;
-	printf("wari");
+
+	count_enc	= readCountEncorder();
+	speed	= count_enc - 32768;
+	resetCountEncorder();
+
 }
 /*******************************************/

@@ -14,7 +14,7 @@
 #include	"pin_assign.h"
 #include	"motor/motor.h"
 #include	"comm/comm.h"
-#include	<pwm12.h>
+#include	"servo/servo.h"
 
 #include	"assert/assert.h"
 /********************************************************/
@@ -31,6 +31,7 @@ int main(void)
 	initialize( );
 	initializeComm();
 	initializeMotor();
+	initializeServo();
 
 	Order	order;
 
