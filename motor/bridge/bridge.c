@@ -18,15 +18,12 @@
 
 /**************************************/
 static void	initializePWM( void );
-static unsigned int	calculatePR( unsigned long duty_percent );
-static void	driveBridgeOff		( unsigned char num_of_bridge );
-static void	driveBridgeHighSide	( unsigned char num_of_bridge );
-static void	driveBridgeLowSide	( unsigned char num_of_bridge );
+static unsigned int	calculatePTPER( unsigned int duty_int );
 /**************************************/
 
 /**************************************/
 #ifdef	_DEBUG
-static void	test_calculatePR( void );
+static void	test_calculatePTPER( void );
 #endif
 /**************************************/
 
@@ -43,7 +40,7 @@ void	initializeBridge( void )
 	initializePWM();
 
 #ifdef	_DEBUG
-	test_calculatePR();
+	test_calculatePTPER();
 #endif
 }
 
@@ -72,7 +69,7 @@ static void	initializePWM( void )
 
 
 /**************************************/
-unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
+extern void	driveBridge( unsigned char phase )
 {
 	switch( phase ){
 	case	EXCITATION_3_2:
@@ -130,115 +127,41 @@ unsigned char	driveBridge( unsigned char phase, unsigned long duty_percent )
 		break;
 	}
 
-	SetDCMCPWM1( 1, calculatePR(duty_percent), 0);
-	SetDCMCPWM1( 2, calculatePR(duty_percent), 0);
-	SetDCMCPWM1( 3, calculatePR(duty_percent), 0);
-
 	return	0;
 }
 
 
 
-static unsigned int	calculatePR( unsigned long duty_percent )
+extern void	setDutyBridge( unsigned int duty_int )
 {
-    unsigned int    calculated_pr;
+	/*
+	 *Dutyを設定する関数
+	 *    duty_int	: 0	~ 0xFFFF
+	 *    PWM Duty	: 0 ~ 100	[%]
+	 */
 
-	if( duty_percent > 95 ){
-		duty_percent	= 95;
-	}
+	unsigned int	calculated_ptper;
 
-    calculated_pr   = duty_percent * G_max_pr2 / 100;
+	calculated_ptper	= calculatePTPER( duty_int );
 
-	return	calculated_pr;
+	SetDCMCPWM1( 1, calculated_ptper, 0);
+	SetDCMCPWM1( 2, calculated_ptper, 0);
+	SetDCMCPWM1( 3, calculated_ptper, 0);
 }
 
 
-/**************************************/
 
-static void	driveBridgeOff		( unsigned char num_of_bridge )
+static unsigned int	calculatePTPER( unsigned int duty_int )
 {
-	switch( num_of_bridge ){
-	case	BRIDGE_1:
-		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT_1L 
-						& PWM1_POUT1H_INACT & PWM1_POUT1L_INACT );
-		break;
+	const unsigned int	MAX_PTPER_ = 1600, LIMIT_PTPER_ = 1520;
+    unsigned int    calculated_ptper;
 
-	case	BRIDGE_2:
-		OverrideMCPWM1( PWM1_POUT_2H & PWM1_POUT_2L 
-						& PWM1_POUT2H_INACT & PWM1_POUT2L_INACT );
-		break;
-
-	case	BRIDGE_3:
-		OverrideMCPWM1( PWM1_POUT_3H & PWM1_POUT_3L 
-						& PWM1_POUT3H_INACT & PWM1_POUT3L_INACT );
-		break;
-
-	default:
-		OverrideMCPWM1( PWM1_POUT_1H & PWM1_POUT_1L 
-						& PWM1_POUT_2H & PWM1_POUT_2L
-						& PWM1_POUT_3H & PWM1_POUT_3L 
-						& PWM1_POUT1H_INACT & PWM1_POUT1L_INACT 
-						& PWM1_POUT2H_INACT & PWM1_POUT2L_INACT 
-						& PWM1_POUT3H_INACT & PWM1_POUT3L_INACT );
-		break;
+    calculated_ptper	= (unsigned long)duty_int * MAX_PTPER_ / 0xFFFF;
+	if( calculated_ptper >= LIMIT_PTPER_ ){
+		calculated_ptper	= LIMIT_PTPER_;
 	}
-}
 
-
-static void	driveBridgeHighSide	( unsigned char num_of_bridge )
-{
-	switch( num_of_bridge ){
-	case	BRIDGE_1:
-		PWM_MODE_1	= RP_OC1;
-		ENABLE_1	= 1;
-		break;
-
-	case	BRIDGE_2:
-		PWM_MODE_2	= RP_OC1;
-		ENABLE_2	= 1;
-		break;
-
-	case	BRIDGE_3:
-		PWM_MODE_3	= RP_OC1;
-		ENABLE_3	= 1;
-		break;
-
-	default:
-		ENABLE_1	= 0;
-		ENABLE_2	= 0;
-		ENABLE_3	= 0;
-		break;
-	}
-}
-	
-
-static void	driveBridgeLowSide	( unsigned char num_of_bridge )
-{
-	switch( num_of_bridge ){
-	case	BRIDGE_1:
-		PWM_MODE_1	= RP_NULL;
-		PWM_1		= 0;
-		ENABLE_1	= 1;
-		break;
-
-	case	BRIDGE_2:
-		PWM_MODE_2	= RP_NULL;
-		PWM_2		= 0;
-		ENABLE_2	= 1;
-		break;
-
-	case	BRIDGE_3:
-		PWM_MODE_3	= RP_NULL;
-		PWM_3		= 0;
-		ENABLE_3	= 1;
-		break;
-
-	default:
-		ENABLE_1	= 0;
-		ENABLE_2	= 0;
-		ENABLE_3	= 0;
-		break;
-	}
+	return	calculated_ptper;
 }
 
 
@@ -251,18 +174,15 @@ static void	driveBridgeLowSide	( unsigned char num_of_bridge )
 #ifdef	_DEBUG
 
 
-static void	test_calculatePR( void )
+static void	test_calculatePTPER( void )
 {
 	unsigned int	i;
 	for( i=0; i<0xFFFF; i++ );
 
-	ASSERT( calculatePR( 0 )	== 0 );
-	ASSERT( calculatePR( 50 )	== 800 );
-	ASSERT( calculatePR( 94 )	== 1504 );
-	ASSERT( calculatePR( 95 )	== 1520 );
-	ASSERT( calculatePR( 100 )	== 1520 );
+	ASSERT( calculatePTPER( 0		)	== 0	);
+	ASSERT( calculatePTPER( 0xFFFF	)	== 1520	);
+	ASSERT( calculatePTPER( 32768	)	== 800	);
 }
-
 
 #endif
 
