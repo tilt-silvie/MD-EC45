@@ -26,12 +26,12 @@
 /**************************************/
 /*グローバル変数*/
 static unsigned char	G_direction_rotation = BRAKE;
-static unsigned long	G_duty = 50;
+static unsigned long	G_duty = 0;
 /**************************************/
 
 
 /**************************************/
-static void	exciteWinding( unsigned char direction_rotation, unsigned long duty );
+static void	exciteWinding( unsigned char direction_rotation );
 static unsigned char	getDirection( signed int voltage );
 static unsigned long	getDuty( signed int target_voltage, signed int supply_voltage );
 static unsigned char	getBackwardExcitationPhase( unsigned char hall_phase );
@@ -46,7 +46,7 @@ void	initializeMotor( void )
 	initializeBridge();
 	G_direction_rotation	= BRAKE;
 	G_duty	= 0;
-	exciteWinding( G_direction_rotation, G_duty );
+	exciteWinding( G_direction_rotation );
 
 #ifdef	_DEBUG
 	Test_getFowardExcitationPhase();
@@ -70,8 +70,8 @@ unsigned char	driveMotor( signed int motor_millivolt )
 	G_direction_rotation	= getDirection( motor_millivolt );
 	G_duty	= getDuty( motor_millivolt, supply_voltage );
 
-	setDutyBridge( G_duty );
-	exciteWinding( G_direction_rotation, G_duty );
+	setDutyBridge( 0x8000 );
+	exciteWinding( G_direction_rotation );
 
 	return	0;
 }
@@ -100,7 +100,7 @@ static unsigned long	getDuty( signed int target_voltage, signed int supply_volta
 }
 
 
-static void	exciteWinding( unsigned char direction_rotation, unsigned long duty )
+static void	exciteWinding( unsigned char direction_rotation )
 {
 	unsigned char	now_phase, next_phase;
 
@@ -140,7 +140,7 @@ void _ISR	_CNInterrupt( void )
 
 	LED_1	= 1; /*動作時間計測用*/ 
 
-	exciteWinding( G_direction_rotation, G_duty );
+	exciteWinding( G_direction_rotation );
 
 	LED_1	= 0; /*動作時間計測用*/ 
 }
