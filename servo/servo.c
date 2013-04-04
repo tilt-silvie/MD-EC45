@@ -40,12 +40,21 @@ static void	initializeTimer( void )
 void _ISR	_T1Interrupt( void )
 {
 	signed long			count_enc, speed;
+	static unsigned int	i;
+
 
 	_T1IF	= 0;
 
 	count_enc	= readCountEncorder();
 	speed	= count_enc - 32768;
 	resetCountEncorder();
+
+	if( i < 50 ){
+		i++;
+	}else{
+		i	= 0;
+		printf("%ld\n",speed);
+	}
 
 }
 /*******************************************/
