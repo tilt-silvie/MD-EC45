@@ -24,20 +24,20 @@ extern void	initializeEncorder( void )
 	_TRISB6 = 1;    _TRISB7  = 1;
 
 	OpenQEI( config_1, config_2 );
+	setCountEncorder( 0 );
 }
 /****************************************/
 
 
 /****************************************/
-extern unsigned int	readCountEncorder( void )
+extern signed int	readCountEncorder( void )
 {
-
-	return	ReadQEI();
+	return	(signed int)((signed long)ReadQEI() - 32768);
 }
 
 
-extern void	resetCountEncorder( void )
+extern void	setCountEncorder( signed int count )
 {
-	POSCNT	= 32768;
+	POSCNT	= (unsigned int)((signed long)count + 32768);
 }
 /****************************************/

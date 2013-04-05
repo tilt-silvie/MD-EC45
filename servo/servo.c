@@ -44,7 +44,6 @@ static void	initializePID( void );
 extern void	initializeServo( void )
 {
 	initializeEncorder();
-	resetCountEncorder();
 
 	initializePID();
 	initializeTimer();
@@ -115,17 +114,16 @@ extern void	setGainServo( float kp, float ki, float kd )
 void _ISR	_T1Interrupt( void )
 {
 	static signed long	output;
-	signed long			count_enc, speed;
+	signed int	count_enc, speed;
 	signed int	output_limited;
 
 
 	_T1IF	= 0;
 
 	count_enc	= readCountEncorder();
-	speed	= count_enc - 32768;
-	resetCountEncorder();
+	setCountEncorder(0);
 
-	G_s_pid.measuredOutput	= (int)(speed);
+	G_s_pid.measuredOutput	= count_enc;
 
 	PID( &G_s_pid );
 
