@@ -135,12 +135,7 @@ void _ISR	_CNInterrupt( void )
 	 */
 
 	_CNIF	= 0;
-
-	LED_1	= 1; /*動作時間計測用*/ 
-
 	exciteWinding( G_direction_rotation );
-
-	LED_1	= 0; /*動作時間計測用*/ 
 }
 
 
