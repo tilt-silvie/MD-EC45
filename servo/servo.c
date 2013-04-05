@@ -54,8 +54,10 @@ static void	initializePID( void );
 extern void	initializeServo( void )
 {
 	initializeEncorder();
-	initializeTimer();
+	resetCountEncorder();
+
 	initializePID();
+	initializeTimer();
 }
 
 
@@ -79,6 +81,7 @@ static void	initializePID( void )
 	G_s_pid.controlHistory	= &G_controlHistory[0];
 
 	PIDInit( &G_s_pid );
+	G_s_pid.controlReference	= 0;
 
 	G_pid_gain_coeff[0]	= Float2Fract( KP_ );
 	G_pid_gain_coeff[1]	= Float2Fract( KI_ );
