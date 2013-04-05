@@ -153,19 +153,25 @@ void _ISR	_T1Interrupt( void )
 	driveMotor( output_limited );
 
 /*******************************************/
+#define	NUM_BUF 150
+#define	TEST_CYCLE 200
+#define	STEP_SPEED 18000
+
+	static signed int buf[2][NUM_BUF];
+	static unsigned int i,cycle;
+
+	if( cycle < TEST_CYCLE ){
+		cycle	++;
+	}else{
+		cycle	= 0;
+
+		xprintf("%5d|%5d|%5d|%5d\n",
+				G_s_pid.controlReference,
+				G_s_pid.measuredOutput,
+				G_s_pid.controlOutput,
+				output_limited);
+
 /*
- *#define	NUM_BUF 150
- *#define	TEST_CYCLE 10
- *#define	STEP_SPEED 18000
- *
- *    static signed int buf[2][NUM_BUF];
- *    static unsigned int i,cycle;
- *
- *    if( cycle < TEST_CYCLE ){
- *        cycle	++;
- *    }else{
- *        cycle	= 0;
- *
  *        if( i < (NUM_BUF/3) ){
  *            setReferenceServo( 0 );
  *        }else if( i < (NUM_BUF/3*2) ){
@@ -186,9 +192,9 @@ void _ISR	_T1Interrupt( void )
  *            }
  *            i++;
  *        }
- *    }
- *
  */
+	}
+
 /*******************************************/
 }
 /*******************************************/
