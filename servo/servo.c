@@ -38,9 +38,9 @@
 
 /*******************************************/
 static tPID	G_s_pid;
-fractional abcCoefficient[3]	__attribute__ ((section (".xbss, bss, xmemory")));
-fractional controlHistory[3]	__attribute__ ((section (".ybss, bss, ymemory")));
-fractional	pid_gain_coeff[3] = {0,0,0};
+fractional G_abcCoefficient[3]	__attribute__ ((section (".xbss, bss, xmemory")));
+fractional G_controlHistory[3]	__attribute__ ((section (".ybss, bss, ymemory")));
+fractional	G_pid_gain_coeff[3] = {0,0,0};
 /*******************************************/
 
 
@@ -75,15 +75,15 @@ static void	initializePID( void )
 {
 	const float	KP_ = 0.01, KI_ = 0.0, KD_ = 0.0;
 
-	G_s_pid.abcCoefficients	= &abcCoefficient[0];
-	G_s_pid.controlHistory	= &controlHistory[0];
+	G_s_pid.abcCoefficients	= &G_abcCoefficient[0];
+	G_s_pid.controlHistory	= &G_controlHistory[0];
 
 	PIDInit( &G_s_pid );
 
-	pid_gain_coeff[0]	= Float2Fract( KP_ );
-	pid_gain_coeff[1]	= Float2Fract( KI_ );
-	pid_gain_coeff[2]	= Float2Fract( KD_ );
-	PIDCoeffCalc( &pid_gain_coeff[0], &G_s_pid );
+	G_pid_gain_coeff[0]	= Float2Fract( KP_ );
+	G_pid_gain_coeff[1]	= Float2Fract( KI_ );
+	G_pid_gain_coeff[2]	= Float2Fract( KD_ );
+	PIDCoeffCalc( &G_pid_gain_coeff[0], &G_s_pid );
 }
 /*******************************************/
 

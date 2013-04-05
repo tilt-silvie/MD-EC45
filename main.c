@@ -125,7 +125,7 @@ static float	transGainChaToFloat( signed char gain )
 {
 	float gain_float;
 
-	gain_float	= gain / 12800.0;
+	gain_float	= gain / 128.0;
 
 	return	gain_float;
 }
