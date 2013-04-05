@@ -28,6 +28,7 @@
 static void	executeOrder( Order order );
 static void	driveMotorSinWave( Order order );
 static void	driveMotorBangbang( Order order );
+static signed long	transSpeedCharToLong( signed char speed );
 /********************************************************/
 
 int main(void) 
@@ -41,12 +42,9 @@ int main(void)
 
 	Order	order;
 
-
 	while( 1 ){
-		/*
-		 *order	= fetchOrder();
-		 *executeOrder( order );
-		 */
+		order	= fetchOrder();
+		executeOrder( order );
 	}
 }
 
@@ -67,9 +65,14 @@ static void	executeOrder( Order order )
 		driveMotorBangbang(order);
 		break;
 
+	case	COMMAND_SPEED_PID:
+		setReferenceServo( transSpeedCharToLong(order.data[0]) );
+		break;
+
 	default:
 		break;
 	}
+
 }
 /********************************************************/
 static void	driveMotorSinWave( Order order )
@@ -92,6 +95,15 @@ static void	driveMotorBangbang( Order order )
 	Test_driveMotor_bangbang( voltage*100, num_loop, period_ms );
 }
 
+static signed long	transSpeedCharToLong( signed char speed )
+{
+	signed long	speed_long;
+
+	speed_long	= speed;
+	speed_long	= 36000 * speed / 128;
+
+	return	speed_long;
+}
 /********************************************************/
 
 

@@ -73,7 +73,7 @@ static void	initializeTimer( void )
 
 static void	initializePID( void )
 {
-	const float	KP_ = 0.3, KI_ = 0.0, KD_ = 0.0;
+	const float	KP_ = 0.01, KI_ = 0.0, KD_ = 0.0;
 
 	G_s_pid.abcCoefficients	= &abcCoefficient[0];
 	G_s_pid.controlHistory	= &controlHistory[0];
