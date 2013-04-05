@@ -104,6 +104,20 @@ extern signed long	setReferenceServo( signed long deg_per_sec )
 /*******************************************/
 
 
+
+
+/*******************************************/
+extern void	setGainServo( float kp, float ki, float kd )
+{
+	G_pid_gain_coeff[0]	= Float2Fract( kp );
+	G_pid_gain_coeff[1]	= Float2Fract( ki );
+	G_pid_gain_coeff[2]	= Float2Fract( kd );
+	PIDCoeffCalc( &G_pid_gain_coeff[0], &G_s_pid );
+}
+/*******************************************/
+
+
+
 /*******************************************/
 void _ISR	_T1Interrupt( void )
 {

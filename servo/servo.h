@@ -11,6 +11,7 @@
 /*******************************************/
 extern void	initializeServo( void );
 extern signed long	setReferenceServo( signed long deg_per_sec );
+extern void	setGainServo( float kp, float ki, float kd );
 /*******************************************/
 
 #endif	/*_SERVO_H_*/
