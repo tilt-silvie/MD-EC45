@@ -27,16 +27,6 @@
 
 
 /*******************************************/
-	/* (374[rpm/V] * 17[V]) = 6358[rpm] = 105.9[rps] = 0.2119[r/2ms] */ 
-	/* 0.2119[r/2ms] * 1440[p/r] = 305.18[p/2ms] */
-	/* 32768[-] / 305.18[p/2ms] = 107.37[-/2ms] */
-	/* --> よって，カウントにかける数は 100 */
-#define	VALUE_BIAS	100
-/*******************************************/
-
-
-
-/*******************************************/
 static tPID	G_s_pid;
 fractional G_abcCoefficient[3]	__attribute__ ((section (".xbss, bss, xmemory")));
 fractional G_controlHistory[3]	__attribute__ ((section (".ybss, bss, ymemory")));
@@ -75,7 +65,7 @@ static void	initializeTimer( void )
 
 static void	initializePID( void )
 {
-	const float	KP_ = 0.01, KI_ = 0.0, KD_ = 0.0;
+	const float	KP_ = 1.0, KI_ = 0.0, KD_ = 0.0;
 
 	G_s_pid.abcCoefficients	= &G_abcCoefficient[0];
 	G_s_pid.controlHistory	= &G_controlHistory[0];
@@ -97,11 +87,11 @@ extern signed long	setReferenceServo( signed long deg_per_sec )
 	signed long	measured_deg_per_sec;
 	signed int	pulse_per_2ms;
 
-	pulse_per_2ms	= deg_per_sec * VALUE_BIAS / 125;
+	pulse_per_2ms	= deg_per_sec / 125;
 	G_s_pid.controlReference	= pulse_per_2ms;
 
 	measured_deg_per_sec	= G_s_pid.measuredOutput;
-	measured_deg_per_sec	= measured_deg_per_sec * 125 / VALUE_BIAS;
+	measured_deg_per_sec	= measured_deg_per_sec * 125;
 	return	measured_deg_per_sec;
 }
 /*******************************************/
@@ -135,7 +125,7 @@ void _ISR	_T1Interrupt( void )
 	speed	= count_enc - 32768;
 	resetCountEncorder();
 
-	G_s_pid.measuredOutput	= (int)(speed * VALUE_BIAS);
+	G_s_pid.measuredOutput	= (int)(speed);
 
 	PID( &G_s_pid );
 
