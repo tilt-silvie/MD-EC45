@@ -10,7 +10,7 @@
 
 /*******************************************/
 extern void	initializeServo( void );
-extern signed int	setReferenceServo( unsigned int ref );
+extern signed long	setReferenceServo( signed long deg_per_sec );
 /*******************************************/
 
 #endif	/*_SERVO_H_*/
