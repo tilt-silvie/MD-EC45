@@ -29,6 +29,7 @@ static void	executeOrder( Order order );
 static void	driveMotorSinWave( Order order );
 static void	driveMotorBangbang( Order order );
 static signed long	transSpeedCharToLong( signed char speed );
+static float	transGainChaToFloat( signed char gain );
 /********************************************************/
 
 int main(void) 
@@ -56,6 +57,9 @@ int main(void)
 /********************************************************/
 static void	executeOrder( Order order )
 {
+	float kp,ki,kd;
+	signed long spd;
+
 	switch( order.command ){
 	case	COMMAND_TEST_SINWAVE:
 		driveMotorSinWave(order);
@@ -66,7 +70,18 @@ static void	executeOrder( Order order )
 		break;
 
 	case	COMMAND_SPEED_PID:
-		setReferenceServo( transSpeedCharToLong(order.data[0]) );
+		spd	= transSpeedCharToLong( order.data[0]);
+		setReferenceServo( spd );
+		xprintf("speed set:%ld\n", spd);
+		break;
+
+	case	COMMAND_PID_GAIN:
+		kp	= transGainChaToFloat(order.data[0]);
+		ki	= transGainChaToFloat(order.data[1]);
+		kd	= transGainChaToFloat(order.data[2]);
+		setGainServo( kp, ki, kd );
+
+		xprintf("gain set\n");
 		break;
 
 	default:
@@ -103,6 +118,16 @@ static signed long	transSpeedCharToLong( signed char speed )
 	speed_long	= 36000 * speed / 128;
 
 	return	speed_long;
+}
+
+
+static float	transGainChaToFloat( signed char gain )
+{
+	float gain_float;
+
+	gain_float	= gain / 12800.0;
+
+	return	gain_float;
 }
 /********************************************************/
 
