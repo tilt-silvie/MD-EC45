@@ -14,9 +14,13 @@
 #include	"pin_assign.h"
 #include	"motor/motor.h"
 #include	"comm/comm.h"
-#include	<pwm12.h>
+#include	"servo/servo.h"
 
 #include	"assert/assert.h"
+#include	"comm/uart/uart_dsPIC33F.h"
+
+
+#include	"xprintf/xprintf.h"
 /********************************************************/
 
 
@@ -31,12 +35,18 @@ int main(void)
 	initialize( );
 	initializeComm();
 	initializeMotor();
+	initializeServo();
+
+	xdev_out( putcUart );
 
 	Order	order;
 
+
 	while( 1 ){
-		order	= fetchOrder();
-		executeOrder( order );
+		/*
+		 *order	= fetchOrder();
+		 *executeOrder( order );
+		 */
 	}
 }
 
@@ -74,6 +84,7 @@ static void	driveMotorSinWave( Order order )
 
 static void	driveMotorBangbang( Order order )
 {
+
 	signed int		voltage		= order.data[0];
 	unsigned char	num_loop	= order.data[1];
 	unsigned long	period_ms	= order.data[2] * 1000;
