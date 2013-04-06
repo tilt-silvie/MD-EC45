@@ -70,10 +70,6 @@ extern signed long	setReferenceServo( signed long deg_per_sec )
 /*******************************************/
 extern void	setGainServo( float kp, float ki, float kd )
 {
-	G_pid_gain_coeff[0]	= Float2Fract( kp );
-	G_pid_gain_coeff[1]	= Float2Fract( ki );
-	G_pid_gain_coeff[2]	= Float2Fract( kd );
-	PIDCoeffCalc( &G_pid_gain_coeff[0], &G_s_pid );
 }
 /*******************************************/
 
@@ -135,49 +131,5 @@ void _ISR	_T1Interrupt( void )
 	}
 	driveMotor( output_limited );
 
-/*******************************************/
-#define	NUM_BUF 150
-#define	TEST_CYCLE 200
-#define	STEP_SPEED 18000
-
-	static signed int buf[2][NUM_BUF];
-	static unsigned int i,cycle;
-
-	if( cycle < TEST_CYCLE ){
-		cycle	++;
-	}else{
-		cycle	= 0;
-
-		xprintf("%5d|%5d|%5d|%5d\n",
-				G_s_pid.controlReference,
-				G_s_pid.measuredOutput,
-				G_s_pid.controlOutput,
-				output_limited);
-
-/*
- *        if( i < (NUM_BUF/3) ){
- *            setReferenceServo( 0 );
- *        }else if( i < (NUM_BUF/3*2) ){
- *            setReferenceServo( STEP_SPEED );
- *        }else{
- *            setReferenceServo( 0 );
- *        }
- *
- *        if( i < NUM_BUF ){
- *            buf[0][i]	= G_s_pid.controlReference;
- *            buf[1][i]	= G_s_pid.measuredOutput;
- *            i++;
- *        }else if(i == NUM_BUF ){
- *            unsigned int j;
- *            xprintf("t[ms],Ref[-],Mes[-]\n"); 
- *            for( j = 0; j < NUM_BUF; j++ ){
- *                xprintf("%d,%d,%d\n", j*2*TEST_CYCLE, buf[0][j], buf[1][j] );
- *            }
- *            i++;
- *        }
- */
-	}
-
-/*******************************************/
 }
 /*******************************************/
