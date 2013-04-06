@@ -37,6 +37,7 @@ fractional	G_pid_gain_coeff[3] = {0,0,0};
 /*******************************************/
 static void	initializeTimer( void );
 static void	initializePID( void );
+static signed int pid( signed int reference_input, signed int mesured_output );
 /*******************************************/
 
 /*******************************************/
@@ -108,6 +109,35 @@ extern void	setGainServo( float kp, float ki, float kd )
 }
 /*******************************************/
 
+
+static signed int pid( signed int reference_input, signed int mesured_output )
+{
+	const float	KP_ = 1.0, KI_ = 0.0, KD_ = 0.0;
+	static signed long	err[3];
+	static signed long	control_output[2];
+
+	signed long delta_control_output;
+
+	/*偏差履歴を更新*/
+	err[2]	= err[1];
+	err[1]	= err[0];
+	err[0]	= reference_input - mesured_output;
+
+	delta_control_output	 = KP_ * (err[0] - err[1]);
+	delta_control_output	+= KI_ *  err[0];
+	delta_control_output	+= KD_ * (err[0] - (2*err[1]) + err[2]);
+
+	control_output[1]	= control_output[0];
+	control_output[0]	= control_output[1] + delta_control_output;
+
+	if( control_output[0] > 32767 ){
+		control_output[0]	= 32767;
+	}else if( control_output[0] < -32768 ){
+		control_output[0]	= -32768;
+	}
+
+	return	(signed int)control_output[0];
+}
 
 
 /*******************************************/
