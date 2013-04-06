@@ -80,11 +80,12 @@ extern void	setGainServo( float kp, float ki, float kd )
 
 static signed int pid( signed int reference_input, signed int mesured_output )
 {
-	const float	KP_ = 1.0, KI_ = 0.0, KD_ = 0.0;
+	/*const unsigned int	KP_ = 3, KI_ = 0, KD_ = 0;*/
+	const float	KP_ = 0.5, KI_ = 0.0, KD_ = 0.0;
 	static signed long	err[3];
-	static signed long	control_output[2];
+	static float	control_output[2];
 
-	signed long delta_control_output;
+	float delta_control_output;
 
 	/*偏差履歴を更新*/
 	err[2]	= err[1];
@@ -98,10 +99,10 @@ static signed int pid( signed int reference_input, signed int mesured_output )
 	control_output[1]	= control_output[0];
 	control_output[0]	= control_output[1] + delta_control_output;
 
-	if( control_output[0] > 32767 ){
-		control_output[0]	= 32767;
-	}else if( control_output[0] < -32768 ){
-		control_output[0]	= -32768;
+	if( control_output[0] > 32767.0 ){
+		control_output[0]	= 32767.0;
+	}else if( control_output[0] < -32768.0 ){
+		control_output[0]	= -32768.0;
 	}
 
 	return	(signed int)control_output[0];
