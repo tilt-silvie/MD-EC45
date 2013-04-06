@@ -23,6 +23,12 @@ static void	initializePID( void );
 static signed int pid( signed int reference_input, signed int mesured_output );
 /*******************************************/
 
+
+/*******************************************/
+static signed int	G_reference_deg_per_sec;
+/*******************************************/
+
+
 /*******************************************/
 
 extern void	initializeServo( void )
@@ -51,12 +57,10 @@ extern signed long	setReferenceServo( signed long deg_per_sec )
 	signed long	measured_deg_per_sec;
 	signed int	pulse_per_2ms;
 
-	pulse_per_2ms	= deg_per_sec / 125;
-	G_s_pid.controlReference	= pulse_per_2ms;
+	pulse_per_2ms			= deg_per_sec / 125;
+	G_reference_deg_per_sec	= pulse_per_2ms;
 
-	measured_deg_per_sec	= G_s_pid.measuredOutput;
-	measured_deg_per_sec	= measured_deg_per_sec * 125;
-	return	measured_deg_per_sec;
+	return	0;
 }
 /*******************************************/
 
@@ -117,11 +121,7 @@ void _ISR	_T1Interrupt( void )
 	count_enc	= readCountEncorder();
 	setCountEncorder(0);
 
-	G_s_pid.measuredOutput	= count_enc;
-
-	PID( &G_s_pid );
-
-	output	+= G_s_pid.controlOutput;
+	output	+= pid( G_reference_deg_per_sec, count_enc );
 
 	if( output > 32767 ){
 		output_limited	= 32767;
