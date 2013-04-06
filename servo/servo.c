@@ -6,17 +6,7 @@
  */
 
 
-/*
- *MEMO
- *fractional型は，signed int に対応してる
- *Fract2Float( 1.0 ) -> 32767
- *Fract2Float( -1.0 ) -> -32768
- *Fract2Float( 1.5 ) -> 32767
- *Fract2Float( -1.5 ) -> -32768
- */
-
 #include	<timer.h>
-#include	<dsp.h>
 #include	"servo.h"
 #include	"encorder/encorder.h"
 #include	"../motor/motor.h"
@@ -24,30 +14,20 @@
 #define	_DEBUG
 #include	"../assert/assert.h"
 #include	"../xprintf/xprintf.h"
-
-
-/*******************************************/
-	/* (374[rpm/V] * 17[V]) = 6358[rpm] = 105.9[rps] = 0.2119[r/2ms] */ 
-	/* 0.2119[r/2ms] * 1440[p/r] = 305.18[p/2ms] */
-	/* 32768[-] / 305.18[p/2ms] = 107.37[-/2ms] */
-	/* --> よって，カウントにかける数は 100 */
-#define	VALUE_BIAS	100
-/*******************************************/
-
-
-
-/*******************************************/
-static tPID	G_s_pid;
-fractional abcCoefficient[3]	__attribute__ ((section (".xbss, bss, xmemory")));
-fractional controlHistory[3]	__attribute__ ((section (".ybss, bss, ymemory")));
-fractional	pid_gain_coeff[3] = {0,0,0};
-/*******************************************/
+#include	"../pin_assign.h"
 
 
 /*******************************************/
 static void	initializeTimer( void );
 static void	initializePID( void );
+static signed int pid( signed int reference_input, signed int mesured_output );
 /*******************************************/
+
+
+/*******************************************/
+static signed int	G_reference_deg_per_sec;
+/*******************************************/
+
 
 /*******************************************/
 
@@ -55,7 +35,6 @@ extern void	initializeServo( void )
 {
 	initializeEncorder();
 	initializeTimer();
-	initializePID();
 }
 
 
@@ -69,22 +48,6 @@ static void	initializeTimer( void )
 	OpenTimer1( config, 10000 );
 	ConfigIntTimer1( T1_INT_PRIOR_3 & T1_INT_ON );
 }
-
-
-static void	initializePID( void )
-{
-	const float	KP_ = 0.3, KI_ = 0.0, KD_ = 0.0;
-
-	G_s_pid.abcCoefficients	= &abcCoefficient[0];
-	G_s_pid.controlHistory	= &controlHistory[0];
-
-	PIDInit( &G_s_pid );
-
-	pid_gain_coeff[0]	= Float2Fract( KP_ );
-	pid_gain_coeff[1]	= Float2Fract( KI_ );
-	pid_gain_coeff[2]	= Float2Fract( KD_ );
-	PIDCoeffCalc( &pid_gain_coeff[0], &G_s_pid );
-}
 /*******************************************/
 
 
@@ -94,35 +57,68 @@ extern signed long	setReferenceServo( signed long deg_per_sec )
 	signed long	measured_deg_per_sec;
 	signed int	pulse_per_2ms;
 
-	pulse_per_2ms	= deg_per_sec * VALUE_BIAS / 125;
-	G_s_pid.controlReference	= pulse_per_2ms;
+	pulse_per_2ms			= deg_per_sec / 125;
+	G_reference_deg_per_sec	= pulse_per_2ms;
 
-	measured_deg_per_sec	= G_s_pid.measuredOutput;
-	measured_deg_per_sec	= measured_deg_per_sec * 125 / VALUE_BIAS;
-	return	measured_deg_per_sec;
+	return	0;
 }
 /*******************************************/
+
+
+
+
+/*******************************************/
+extern void	setGainServo( float kp, float ki, float kd )
+{
+}
+/*******************************************/
+
+
+static signed int pid( signed int reference_input, signed int mesured_output )
+{
+	/*const unsigned int	KP_ = 3, KI_ = 0, KD_ = 0;*/
+	const float	KP_ = 0.5, KI_ = 0.0, KD_ = 0.0;
+	static signed long	err[3];
+	static float	control_output[2];
+
+	float delta_control_output;
+
+	/*偏差履歴を更新*/
+	err[2]	= err[1];
+	err[1]	= err[0];
+	err[0]	= reference_input - mesured_output;
+
+	delta_control_output	 = KP_ * (err[0] - err[1]);
+	delta_control_output	+= KI_ *  err[0];
+	delta_control_output	+= KD_ * (err[0] - (2*err[1]) + err[2]);
+
+	control_output[1]	= control_output[0];
+	control_output[0]	= control_output[1] + delta_control_output;
+
+	if( control_output[0] > 32767.0 ){
+		control_output[0]	= 32767.0;
+	}else if( control_output[0] < -32768.0 ){
+		control_output[0]	= -32768.0;
+	}
+
+	return	(signed int)control_output[0];
+}
 
 
 /*******************************************/
 void _ISR	_T1Interrupt( void )
 {
 	static signed long	output;
-	signed long			count_enc, speed;
+	signed int	count_enc, speed;
 	signed int	output_limited;
 
 
 	_T1IF	= 0;
 
 	count_enc	= readCountEncorder();
-	speed	= count_enc - 32768;
-	resetCountEncorder();
+	setCountEncorder(0);
 
-	G_s_pid.measuredOutput	= (int)(speed * VALUE_BIAS);
-
-	PID( &G_s_pid );
-
-	output	+= G_s_pid.controlOutput;
+	output	+= pid( G_reference_deg_per_sec, count_enc );
 
 	if( output > 32767 ){
 		output_limited	= 32767;
@@ -135,43 +131,5 @@ void _ISR	_T1Interrupt( void )
 	}
 	driveMotor( output_limited );
 
-/*******************************************/
-/*
- *#define	NUM_BUF 150
- *#define	TEST_CYCLE 10
- *#define	STEP_SPEED 18000
- *
- *    static signed int buf[2][NUM_BUF];
- *    static unsigned int i,cycle;
- *
- *    if( cycle < TEST_CYCLE ){
- *        cycle	++;
- *    }else{
- *        cycle	= 0;
- *
- *        if( i < (NUM_BUF/3) ){
- *            setReferenceServo( 0 );
- *        }else if( i < (NUM_BUF/3*2) ){
- *            setReferenceServo( STEP_SPEED );
- *        }else{
- *            setReferenceServo( 0 );
- *        }
- *
- *        if( i < NUM_BUF ){
- *            buf[0][i]	= G_s_pid.controlReference;
- *            buf[1][i]	= G_s_pid.measuredOutput;
- *            i++;
- *        }else if(i == NUM_BUF ){
- *            unsigned int j;
- *            xprintf("t[ms],Ref[-],Mes[-]\n"); 
- *            for( j = 0; j < NUM_BUF; j++ ){
- *                xprintf("%d,%d,%d\n", j*2*TEST_CYCLE, buf[0][j], buf[1][j] );
- *            }
- *            i++;
- *        }
- *    }
- *
- */
-/*******************************************/
 }
 /*******************************************/

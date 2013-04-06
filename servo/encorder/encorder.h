@@ -12,8 +12,8 @@
 /***************************************/
 
 extern void	initializeEncorder( void );
-extern unsigned int	readCountEncorder( void );
-extern void	resetCountEncorder( void );
+extern signed int	readCountEncorder( void );
+extern void	setCountEncorder( signed int count );
 
 /***************************************/
 

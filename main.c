@@ -28,6 +28,8 @@
 static void	executeOrder( Order order );
 static void	driveMotorSinWave( Order order );
 static void	driveMotorBangbang( Order order );
+static signed long	transSpeedCharToLong( signed char speed );
+static float	transGainChaToFloat( signed char gain );
 /********************************************************/
 
 int main(void) 
@@ -41,12 +43,9 @@ int main(void)
 
 	Order	order;
 
-
 	while( 1 ){
-		/*
-		 *order	= fetchOrder();
-		 *executeOrder( order );
-		 */
+		order	= fetchOrder();
+		executeOrder( order );
 	}
 }
 
@@ -58,6 +57,9 @@ int main(void)
 /********************************************************/
 static void	executeOrder( Order order )
 {
+	float kp,ki,kd;
+	signed long spd;
+
 	switch( order.command ){
 	case	COMMAND_TEST_SINWAVE:
 		driveMotorSinWave(order);
@@ -67,9 +69,25 @@ static void	executeOrder( Order order )
 		driveMotorBangbang(order);
 		break;
 
+	case	COMMAND_SPEED_PID:
+		spd	= transSpeedCharToLong( order.data[0]);
+		setReferenceServo( spd );
+		xprintf("speed set:%ld\n", spd);
+		break;
+
+	case	COMMAND_PID_GAIN:
+		kp	= transGainChaToFloat(order.data[0]);
+		ki	= transGainChaToFloat(order.data[1]);
+		kd	= transGainChaToFloat(order.data[2]);
+		setGainServo( kp, ki, kd );
+
+		xprintf("gain set\n");
+		break;
+
 	default:
 		break;
 	}
+
 }
 /********************************************************/
 static void	driveMotorSinWave( Order order )
@@ -92,6 +110,25 @@ static void	driveMotorBangbang( Order order )
 	Test_driveMotor_bangbang( voltage*100, num_loop, period_ms );
 }
 
+static signed long	transSpeedCharToLong( signed char speed )
+{
+	signed long	speed_long;
+
+	speed_long	= speed;
+	speed_long	= 36000 * speed / 128;
+
+	return	speed_long;
+}
+
+
+static float	transGainChaToFloat( signed char gain )
+{
+	float gain_float;
+
+	gain_float	= gain / 128.0;
+
+	return	gain_float;
+}
 /********************************************************/
 
 
