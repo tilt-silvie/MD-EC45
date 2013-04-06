@@ -6,17 +6,7 @@
  */
 
 
-/*
- *MEMO
- *fractional型は，signed int に対応してる
- *Fract2Float( 1.0 ) -> 32767
- *Fract2Float( -1.0 ) -> -32768
- *Fract2Float( 1.5 ) -> 32767
- *Fract2Float( -1.5 ) -> -32768
- */
-
 #include	<timer.h>
-#include	<dsp.h>
 #include	"servo.h"
 #include	"encorder/encorder.h"
 #include	"../motor/motor.h"
@@ -24,14 +14,7 @@
 #define	_DEBUG
 #include	"../assert/assert.h"
 #include	"../xprintf/xprintf.h"
-
-
-/*******************************************/
-static tPID	G_s_pid;
-fractional G_abcCoefficient[3]	__attribute__ ((section (".xbss, bss, xmemory")));
-fractional G_controlHistory[3]	__attribute__ ((section (".ybss, bss, ymemory")));
-fractional	G_pid_gain_coeff[3] = {0,0,0};
-/*******************************************/
+#include	"../pin_assign.h"
 
 
 /*******************************************/
@@ -45,8 +28,6 @@ static signed int pid( signed int reference_input, signed int mesured_output );
 extern void	initializeServo( void )
 {
 	initializeEncorder();
-
-	initializePID();
 	initializeTimer();
 }
 
@@ -60,23 +41,6 @@ static void	initializeTimer( void )
 
 	OpenTimer1( config, 10000 );
 	ConfigIntTimer1( T1_INT_PRIOR_3 & T1_INT_ON );
-}
-
-
-static void	initializePID( void )
-{
-	const float	KP_ = 1.0, KI_ = 0.0, KD_ = 0.0;
-
-	G_s_pid.abcCoefficients	= &G_abcCoefficient[0];
-	G_s_pid.controlHistory	= &G_controlHistory[0];
-
-	PIDInit( &G_s_pid );
-	G_s_pid.controlReference	= 0;
-
-	G_pid_gain_coeff[0]	= Float2Fract( KP_ );
-	G_pid_gain_coeff[1]	= Float2Fract( KI_ );
-	G_pid_gain_coeff[2]	= Float2Fract( KD_ );
-	PIDCoeffCalc( &G_pid_gain_coeff[0], &G_s_pid );
 }
 /*******************************************/
 
