@@ -19,7 +19,7 @@ extern void	initializeEncorder( void )
 				QEI_UP_COUNT & QEI_IDLE_STOP;
 				 
 	config_2 =	MATCH_INDEX_PHASEA_LOW & MATCH_INDEX_PHASEB_LOW & 
-				POS_CNT_ERR_INT_DISABLE & QEI_QE_CLK_DIVIDE_1_128 & QEI_QE_OUT_ENABLE;
+				POS_CNT_ERR_INT_DISABLE & QEI_QE_CLK_DIVIDE_1_256 & QEI_QE_OUT_DISABLE;
 	RPINR14 = 0b0000011100000110;   /* RP7 is QEB input and RP6 is QEA input */
 	_TRISB6 = 1;    _TRISB7  = 1;
 
@@ -33,6 +33,7 @@ extern void	initializeEncorder( void )
 extern signed int	readCountEncorder( void )
 {
 	return	(signed int)((signed long)ReadQEI() - 32768);
+
 }
 
 
